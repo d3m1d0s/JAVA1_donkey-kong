@@ -223,35 +223,7 @@ public class Game {
         double scoreHeight = brink * 2;
         this.score = new Score(this, new Point2D(0, 0), scoreWidth, scoreHeight);
 
-    //All to objects
-        objects = new DrawableSimulable[platforms.size() + barrels.size() + ladders.size() + 6]; // +5 для DonkeyKong, Mario, Princess, Fireman и FireBarrel
-        int index = 0;
-
-        // Добавляем платформы
-        for (Platform platform : platforms) {
-            objects[index++] = platform;
-        }
-
-        // Добавляем лестницы
-        for (Ladder ladder : ladders) {
-            objects[index++] = ladder;
-        }
-
-        // Добавляем бочки
-        for (Barrel barrel : barrels) {
-            objects[index++] = barrel;
-        }
-
-        objects[index++] = donkeyKong;
-        objects[index++] = mario;
-        objects[index++] = princess;
-        objects[index++] = fireBarrel;
-        objects[index++] = score;
-
-        // Добавляем персонажей
-        for (Fireman fireman : firemans) {
-            objects[index] = fireman;
-        }
+        updateObjectsArray();
     }
 
 
