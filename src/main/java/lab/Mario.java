@@ -125,12 +125,10 @@ public class Mario extends WalkingEnemy {
         super.hitBy(another);
         if (another instanceof MovingEntity || another instanceof DonkeyKong || another instanceof FireBarrel) {
             lostTheLife = true;
-            System.out.println(lostTheLife);
         }
-        if (another instanceof Princess) {
+        if (another instanceof Princess && !savedThePrincess) {
             score+=1000;
             savedThePrincess = true;
-            System.out.println(savedThePrincess);
         }
     }
 }
