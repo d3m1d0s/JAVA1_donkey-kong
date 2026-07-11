@@ -11,7 +11,6 @@ public class Score extends GameEntity {
     private static final double HEART_SIZE = 24;
     private static final double HEART_GAP = 4;
 
-    private int tileSize = 20;
     private final Image heartImage = new Image(getClass().getResourceAsStream("health.png"),
             HEART_SIZE, HEART_SIZE, true, true);
 
@@ -40,11 +39,11 @@ public class Score extends GameEntity {
     @Override
     protected void drawInternal(GraphicsContext gc) {
         gc.setFill(Color.LIGHTGRAY);
-        gc.setFont(Font.font("Arial", FontWeight.BOLD, this.tileSize * 2.0));
-        gc.fillText("Score " + String.valueOf(game.getMario().getScore()), 0.0, this.tileSize * 2.5);
+        gc.setFont(Font.font("Arial", FontWeight.BOLD, Game.TILE_SIZE * 2.0));
+        gc.fillText("Score " + String.valueOf(game.getMario().getScore()), 0.0, Game.TILE_SIZE * 2.5);
 
         for (int i = 0; i < game.getMario().getLives(); i++) {
-            gc.drawImage(heartImage, i * (HEART_SIZE + HEART_GAP), this.tileSize * 3, HEART_SIZE, HEART_SIZE);
+            gc.drawImage(heartImage, i * (HEART_SIZE + HEART_GAP), Game.TILE_SIZE * 3, HEART_SIZE, HEART_SIZE);
         }
 
         if (game.getIsGameOver()) {

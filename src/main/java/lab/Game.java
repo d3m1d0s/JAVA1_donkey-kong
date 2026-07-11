@@ -11,6 +11,9 @@ import java.util.ArrayList;
 import java.util.List;
 
 public class Game {
+    public static final double TILE_SIZE = 20;
+    private static final int JUMP_BONUS = 100;
+
     private final double width;
     private final double height;
 
@@ -33,7 +36,6 @@ public class Game {
     private final Random random = new Random();
 
     public Game(double width, double height) {
-        double tileSize = 20;
         this.width = width;
         this.height = height;
 
@@ -42,68 +44,68 @@ public class Game {
 
         this.platforms = new ArrayList<>();
 
-        double ladderWidth = tileSize;
+        double ladderWidth = TILE_SIZE;
         this.ladders = new ArrayList<>();
 
-        double platformHeight = tileSize;
-        double platformWidth = tileSize * 2;
+        double platformHeight = TILE_SIZE;
+        double platformWidth = TILE_SIZE * 2;
         int numberOfLevels = 7;
 
         double verticalSpacing = (height - platformHeight * numberOfLevels) / (numberOfLevels + 1);
 
         for (int i = 0; i < numberOfLevels; i++) {
-            double posX = i % 2 == 0 ? (width - platformWidth) / 2 - 11 * tileSize : (width - platformWidth) / 2 + 11 * tileSize;
+            double posX = i % 2 == 0 ? (width - platformWidth) / 2 - 11 * TILE_SIZE : (width - platformWidth) / 2 + 11 * TILE_SIZE;
             double posY = verticalSpacing * (i + 1) + platformHeight * i;
-            posY += tileSize * 2;
+            posY += TILE_SIZE * 2;
 
-            double ladderHeight = tileSize;
+            double ladderHeight = TILE_SIZE;
             if (i != 0) {
                 if (i % 2 != 0) {
                     if (i != 1) {
                         for (int j = 0; j < 13; j++) {
                             if (j == 1 && i == 3) {
-                                for (double k = 0; k < 3 * tileSize; k += tileSize) {
+                                for (double k = 0; k < 3 * TILE_SIZE; k += TILE_SIZE) {
                                     this.ladders.add(new Ladder(this, new Point2D(posX, posY  + k), ladderWidth, ladderHeight));
                                 }
                             } if (j == 1 && i == 5) {
-                                for (double k = 0; k < 4 * tileSize; k += tileSize) {
+                                for (double k = 0; k < 4 * TILE_SIZE; k += TILE_SIZE) {
                                     this.ladders.add(new Ladder(this, new Point2D(posX, posY  + k), ladderWidth, ladderHeight));
                                 }
                             }
                             else if (j == 7 && i == 5) {
-                                for (double k = 0; k < 5 * tileSize; k += tileSize) {
+                                for (double k = 0; k < 5 * TILE_SIZE; k += TILE_SIZE) {
                                     this.ladders.add(new Ladder(this, new Point2D(posX, posY  + k), ladderWidth, ladderHeight));
                                 }
                             } else if (j == 5 && i == 3) {
-                                for (double k = 0; k < 4 * tileSize; k += tileSize) {
+                                for (double k = 0; k < 4 * TILE_SIZE; k += TILE_SIZE) {
                                     this.ladders.add(new Ladder(this, new Point2D(posX, posY  + k), ladderWidth, ladderHeight));
                                 }
                             } else if (j == 9 && i == 3) {
-                                for (double k = 0; k < 5 * tileSize; k += tileSize) {
+                                for (double k = 0; k < 5 * TILE_SIZE; k += TILE_SIZE) {
                                     this.ladders.add(new Ladder(this, new Point2D(posX, posY  + k), ladderWidth, ladderHeight));
                                 }
                             }
                             this.platforms.add(new Platform(this, new Point2D(posX, posY), new Point2D(platformWidth, platformHeight)));
-                            posX -= tileSize * 2; posY-=2;
+                            posX -= TILE_SIZE * 2; posY-=2;
                         }
                     } else {
                         for (int j = 0; j < 4; j++) {
                             if (j == 1) {
-                                for (double k = 0; k < 3 * tileSize; k += tileSize) {
+                                for (double k = 0; k < 3 * TILE_SIZE; k += TILE_SIZE) {
                                     this.ladders.add(new Ladder(this, new Point2D(posX, posY  + k), ladderWidth, ladderHeight));
                                 }
                             }
                             this.platforms.add(new Platform(this, new Point2D(posX, posY), new Point2D(platformWidth, platformHeight)));
-                            posX -= tileSize * 2; posY-=2;
+                            posX -= TILE_SIZE * 2; posY-=2;
                         }
                         for (int j = 0; j < 9; j++) {
                             if (j == 3) {
-                                for (double k = 0; k < 4 * tileSize; k += tileSize) {
+                                for (double k = 0; k < 4 * TILE_SIZE; k += TILE_SIZE) {
                                     this.ladders.add(new Ladder(this, new Point2D(posX, posY  +  k), ladderWidth, ladderHeight));
                                 }
                             }
                             this.platforms.add(new Platform(this, new Point2D(posX, posY), new Point2D(platformWidth, platformHeight)));
-                            posX -= tileSize * 2;
+                            posX -= TILE_SIZE * 2;
                         }
                     }
                 }
@@ -112,70 +114,70 @@ public class Game {
                     if (i != 6) {
                         for (int j = 0; j < 13; j++) {
                             if (j == 1) {
-                                for (double k = 0; k < 3 * tileSize; k += tileSize) {
+                                for (double k = 0; k < 3 * TILE_SIZE; k += TILE_SIZE) {
                                     this.ladders.add(new Ladder(this, new Point2D(posX, posY + k), ladderWidth, ladderHeight));
                                 }
                             } else if (j == 3 && i == 2) {
-                                for (double k = 0; k < 4 * tileSize; k += tileSize) {
+                                for (double k = 0; k < 4 * TILE_SIZE; k += TILE_SIZE) {
                                     this.ladders.add(new Ladder(this, new Point2D(posX, posY + k), ladderWidth, ladderHeight));
                                 }
                             } else if (j == 9 && i == 2) {
-                                for (double k = 0; k < 5 * tileSize; k += tileSize) {
+                                for (double k = 0; k < 5 * TILE_SIZE; k += TILE_SIZE) {
                                     this.ladders.add(new Ladder(this, new Point2D(posX, posY + k), ladderWidth, ladderHeight));
                                 }
                             } else if (j == 5 && i == 4) {
-                                for (double k = 0; k < 4 * tileSize; k += tileSize) {
+                                for (double k = 0; k < 4 * TILE_SIZE; k += TILE_SIZE) {
                                     this.ladders.add(new Ladder(this, new Point2D(posX, posY + k), ladderWidth, ladderHeight));
                                 }
                             }
                             this.platforms.add(new Platform(this, new Point2D(posX, posY), new Point2D(platformWidth, platformHeight)));
-                            posX += tileSize * 2; posY-=2;
+                            posX += TILE_SIZE * 2; posY-=2;
                         }
                     } else {
-                        posX -= tileSize * 2;
+                        posX -= TILE_SIZE * 2;
                         for (int j = 0; j < 6; j++) {
                             this.platforms.add(new Platform(this, new Point2D(posX, posY), new Point2D(platformWidth, platformHeight)));
-                            posX += tileSize * 2;
+                            posX += TILE_SIZE * 2;
                         }
                         for (int j = 0; j < 8; j++) {
                             this.platforms.add(new Platform(this, new Point2D(posX, posY), new Point2D(platformWidth, platformHeight)));
-                            posX += tileSize * 2; posY-=2;
+                            posX += TILE_SIZE * 2; posY-=2;
                         }
                     }
 
                 }
             } else {
-                posX += tileSize * 9;
+                posX += TILE_SIZE * 9;
                 for (int j = 0; j < 3; j++) {
                     if (j == 2) {
-                        for (double k = 0; k < 4 * tileSize; k += tileSize) {
+                        for (double k = 0; k < 4 * TILE_SIZE; k += TILE_SIZE) {
                             this.ladders.add(new Ladder(this, new Point2D(posX, posY +2+ k), ladderWidth, ladderHeight));
                         }
                     }
                     this.platforms.add(new Platform(this, new Point2D(posX, posY), new Point2D(platformWidth, platformHeight)));
-                    posX += tileSize * 2;
+                    posX += TILE_SIZE * 2;
                 }
             }
         }
 
-        double donkeyKongWidth = tileSize * 4 * 1.5;
-        double donkeyKongHeight = tileSize * 4;
+        double donkeyKongWidth = TILE_SIZE * 4 * 1.5;
+        double donkeyKongHeight = TILE_SIZE * 4;
         this.donkeyKong = new DonkeyKong(this, new Point2D(100, 131), donkeyKongWidth, donkeyKongHeight);
 
-        double princessWidth = tileSize * 0.5;
-        double princessHeight = tileSize;
+        double princessWidth = TILE_SIZE * 0.5;
+        double princessHeight = TILE_SIZE;
         this.princess = new Princess(this, new Point2D(280, 97), princessWidth, princessHeight);
 
-        double marioWidth = tileSize;
-        double marioHeight = tileSize;
-        this.mario = new Mario(this, new Point2D(100, 670), marioWidth, marioHeight);
+        double marioWidth = TILE_SIZE;
+        double marioHeight = TILE_SIZE;
+        this.mario = new Mario(this, Mario.START_POSITION, marioWidth, marioHeight);
 
-        double firemanWidth = tileSize;
-        double firemanHeight = tileSize;
+        double firemanWidth = TILE_SIZE;
+        double firemanHeight = TILE_SIZE;
         this.firemen.add(new Fireman(this, new Point2D(180, 687), firemanWidth, firemanHeight, new Point2D(100, 0)));
 
-        double fireBarrelWidth = tileSize * 2;
-        double fireBarrelHeight = tileSize * 2;
+        double fireBarrelWidth = TILE_SIZE * 2;
+        double fireBarrelHeight = TILE_SIZE * 2;
         this.fireBarrel = new FireBarrel(this, new Point2D(60, 671), fireBarrelWidth, fireBarrelHeight);
 
         this.score = new Score(this, new Point2D(0, 0));
@@ -246,7 +248,7 @@ public class Game {
                             if (nearMiss && !mario.isJumpBonusPaid()
                                     && !mario.isOnPlatform() && !mario.isClimbing()) {
                                 mario.markJumpBonusPaid();
-                                mario.setScore(mario.getScore() + 100);
+                                mario.setScore(mario.getScore() + JUMP_BONUS);
                             }
                         }
                     }

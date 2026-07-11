@@ -13,15 +13,18 @@ public class App extends Application {
 		launch(args);
 	}
 
+	private static final double CANVAS_WIDTH = 672;
+	private static final double CANVAS_HEIGHT = 768;
+
 	private GameController gameController;
 
 	@Override
 	public void start(Stage primaryStage) {
 		try {
 			Group root = new Group();
-			Canvas canvas = new Canvas(672, 768);
+			Canvas canvas = new Canvas(CANVAS_WIDTH, CANVAS_HEIGHT);
 			root.getChildren().add(canvas);
-			Scene scene = new Scene(root, 672, 768);
+			Scene scene = new Scene(root, CANVAS_WIDTH, CANVAS_HEIGHT);
 
 			gameController = new GameController(canvas);
 			gameController.initializeControlHandlers(scene);

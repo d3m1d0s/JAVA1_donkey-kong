@@ -6,6 +6,10 @@ import javafx.scene.canvas.GraphicsContext;
 import javafx.scene.image.Image;
 
 public class Mario extends WalkingCharacter {
+    static final Point2D START_POSITION = new Point2D(100, 670);
+    private static final double JUMP_SPEED = 90;
+    private static final int RESCUE_BONUS = 1000;
+
     private boolean lostTheLife = false;
     private boolean savedThePrincess = false;
     private boolean jumpBonusPaid = true;
@@ -48,7 +52,7 @@ public class Mario extends WalkingCharacter {
 
     public void jump() {
         if (timeSinceGrounded <= JUMP_GRACE_TIME && !onLadder) {
-            velocity = new Point2D(velocity.getX(), -90);
+            velocity = new Point2D(velocity.getX(), -JUMP_SPEED);
             onPlatform = false;
             jumpBonusPaid = false;
             timeSinceGrounded = 1;
@@ -98,7 +102,7 @@ public class Mario extends WalkingCharacter {
             this.lives--;
 
             if (this.lives > 0) {
-                setPosition(new Point2D(100, 670));
+                setPosition(START_POSITION);
             }
         } else if (this.lostTheLife) {
             this.lostTheLife = false; // ignore hits taken during the immunity window
@@ -125,7 +129,7 @@ public class Mario extends WalkingCharacter {
             lostTheLife = true;
         }
         if (another instanceof Princess && !savedThePrincess) {
-            score+=1000;
+            score += RESCUE_BONUS;
             savedThePrincess = true;
         }
     }
