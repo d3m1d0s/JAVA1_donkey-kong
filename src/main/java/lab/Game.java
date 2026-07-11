@@ -281,14 +281,19 @@ public class Game {
             }
 
             timeSinceLastSpawn += timeDelta;
+            boolean removedAny = false;
             for (Iterator<Barrel> iterator = barrels.iterator(); iterator.hasNext();) {
                 Barrel barrel = iterator.next();
                 if (barrel.shouldBeRemoved()) {
-                    iterator.remove();// Удаление объекта из списка
+                    iterator.remove();
+                    removedAny = true;
                     if (barrel instanceof UniqueBarrel) {
                         spawnFire();
                     }
                 }
+            }
+            if (removedAny) {
+                updateObjectsArray();
             }
             if (timeSinceLastSpawn >= spawnInterval) {
                 spawnBarrel();
