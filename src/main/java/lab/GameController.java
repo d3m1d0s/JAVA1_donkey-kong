@@ -89,8 +89,11 @@ public class GameController {
         if (pressedKeys.contains(KeyCode.UP)) { climb--; }
         if (pressedKeys.contains(KeyCode.DOWN)) { climb++; }
 
-        if (!mario.isClimbing() && climb != 0 && mario.isOnLadder()) {
-            mario.startClimbing();
+        if (!mario.isClimbing() && climb != 0) {
+            boolean canGrab = climb < 0 ? mario.canGrabLadderAbove() : mario.canGrabLadderBelow();
+            if (canGrab) {
+                mario.startClimbing();
+            }
         }
 
         if (mario.isClimbing()) {

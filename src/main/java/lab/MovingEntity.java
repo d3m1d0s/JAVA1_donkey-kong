@@ -7,6 +7,7 @@ import javafx.scene.image.Image;
 
 public abstract class MovingEntity extends GameEntity implements Collisionable {
     protected static final double GRAVITY = 200;
+    private static final double LADDER_GRAB_MARGIN = 6;
     protected Point2D velocity;
     protected double width;
     protected double height;
@@ -33,7 +34,7 @@ public abstract class MovingEntity extends GameEntity implements Collisionable {
             if (velocity.getY() > 0 && landOnPlatform(previousBottom)) {
                 return;
             }
-            if (!isOnLadder()) {
+            if (!touchesAnyLadder()) {
                 stopClimbing();
                 velocity = new Point2D(velocity.getX(), 0);
             }
@@ -47,7 +48,7 @@ public abstract class MovingEntity extends GameEntity implements Collisionable {
         for (Platform platform : game.getPlatforms()) {
             Rectangle2D box = platform.getBoundingBox();
             // only a fresh crossing of the top counts, so the descent can pass through the platform it started from
-            boolean crossedTop = previousBottom <= box.getMinY() && bottom > box.getMinY();
+            boolean crossedTop = previousBottom < box.getMinY() && bottom > box.getMinY();
             boolean overlapsX = position.getX() + width > box.getMinX() && position.getX() < box.getMaxX();
             if (crossedTop && overlapsX) {
                 position = new Point2D(position.getX(), box.getMinY() - height);
@@ -148,13 +149,43 @@ public abstract class MovingEntity extends GameEntity implements Collisionable {
         return onLadder;
     }
 
-    public boolean isOnLadder() {
+    public boolean canGrabLadderAbove() {
+        Rectangle2D box = getBoundingBox();
         for (Ladder ladder : game.getLadders()) {
-            if (this.getBoundingBox().intersects(ladder.getBoundingBox())) {
+            Rectangle2D grab = grabBox(ladder);
+            if (box.intersects(grab) && grab.getMinY() < box.getMinY()) {
                 return true;
             }
         }
         return false;
+    }
+
+    public boolean canGrabLadderBelow() {
+        Rectangle2D box = getBoundingBox();
+        for (Ladder ladder : game.getLadders()) {
+            Rectangle2D grab = grabBox(ladder);
+            if (box.intersects(grab) && grab.getMaxY() > box.getMaxY()) {
+                return true;
+            }
+        }
+        return false;
+    }
+
+    private boolean touchesAnyLadder() {
+        Rectangle2D box = getBoundingBox();
+        for (Ladder ladder : game.getLadders()) {
+            if (box.intersects(grabBox(ladder))) {
+                return true;
+            }
+        }
+        return false;
+    }
+
+    // the grab zone reaches past both ladder ends: the generated level leaves small gaps there
+    private Rectangle2D grabBox(Ladder ladder) {
+        Rectangle2D strip = ladder.getBoundingBox();
+        return new Rectangle2D(strip.getMinX(), strip.getMinY() - LADDER_GRAB_MARGIN,
+                strip.getWidth(), strip.getHeight() + 2 * LADDER_GRAB_MARGIN);
     }
 
     @Override
