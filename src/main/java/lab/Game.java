@@ -16,8 +16,6 @@ import java.util.List;
 public class Game {
     private final double width;
     private final double height;
-    private static final double JUMP_SCORE_COOLDOWN = 1.0;
-    private double timeSinceJumpScore = JUMP_SCORE_COOLDOWN;
 
     private boolean isStarted = false;
     private boolean isGameOver = false;
@@ -281,7 +279,6 @@ public class Game {
             }
 
             timeSinceLastSpawn += timeDelta;
-            timeSinceJumpScore += timeDelta;
             boolean removedAny = false;
             for (Iterator<Barrel> iterator = barrels.iterator(); iterator.hasNext();) {
                 Barrel barrel = iterator.next();
@@ -324,8 +321,9 @@ public class Game {
 
                             boolean nearMiss = obj1Col.intersects2(obj2Col.getBoundingBox2())
                                     && !obj1Col.intersects(obj2Col.getBoundingBox());
-                            if (nearMiss && timeSinceJumpScore >= JUMP_SCORE_COOLDOWN) {
-                                timeSinceJumpScore = 0;
+                            if (nearMiss && !mario.isJumpBonusPaid()
+                                    && !mario.isOnPlatform() && !mario.isClimbing()) {
+                                mario.markJumpBonusPaid();
                                 mario.setScore(mario.getScore() + 100);
                             }
                         }

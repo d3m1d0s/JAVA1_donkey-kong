@@ -150,6 +150,10 @@ public abstract class MovingEntity extends GameEntity implements Collisionable {
         return onLadder;
     }
 
+    public boolean isOnPlatform() {
+        return onPlatform;
+    }
+
     public boolean canGrabLadderAbove() {
         Rectangle2D box = getBoundingBox();
         for (Ladder ladder : game.getLadders()) {

@@ -8,6 +8,7 @@ import javafx.scene.image.Image;
 public class Mario extends WalkingEnemy {
     private boolean lostTheLife = false;
     private boolean savedThePrincess = false;
+    private boolean jumpBonusPaid = true;
     private int score = 0;
     private int lifes = 3;
     private static final double IMMUNITY_TIME = 3.0; // 3 секунды бессмертия после потери жизни
@@ -26,9 +27,18 @@ public class Mario extends WalkingEnemy {
 
     public void jump() {
         if (onPlatform) {
-            velocity = new Point2D(velocity.getX(), -90); // Примерное значение для прыжка
-            onPlatform = false; // Персонаж покидает платформу
+            velocity = new Point2D(velocity.getX(), -90);
+            onPlatform = false;
+            jumpBonusPaid = false;
         }
+    }
+
+    public boolean isJumpBonusPaid() {
+        return jumpBonusPaid;
+    }
+
+    public void markJumpBonusPaid() {
+        jumpBonusPaid = true;
     }
 
     public Point2D getVelocity() {
