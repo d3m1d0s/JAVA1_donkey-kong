@@ -8,6 +8,8 @@ import javafx.scene.image.Image;
 public abstract class MovingEntity extends GameEntity implements Collisionable {
     protected static final double GRAVITY = 200;
     private static final double LADDER_GRAB_MARGIN = 6;
+    // overlaps this shallow count as steps of the sloped rows or landings, not wall hits
+    private static final double STEP_TOLERANCE = 10;
     protected Point2D velocity;
     protected double width;
     protected double height;
@@ -64,7 +66,7 @@ public abstract class MovingEntity extends GameEntity implements Collisionable {
 
     protected void standardMovementLogic(double timeDelta) {
         if (onPlatform) {
-            land(timeDelta);
+            land();
         }
         if (!onPlatform) {
             fall(timeDelta);
@@ -110,30 +112,10 @@ public abstract class MovingEntity extends GameEntity implements Collisionable {
         position = position.add(0, velocity.getY() * timeDelta);
     }
 
-    public void land(double timeDelta) {
-        if (velocity.getY() > 0) { // Проверяем, что бочка падала вниз (её скорость по Y была положительной)
-            velocity = new Point2D(velocity.getX(), 0); // Останавливаем вертикальное движение
-
-            onPlatform = true; // Устанавливаем флаг, что бочка находится на платформе
-            // Корректируем положение бочки, чтобы она "стояла" на платформе
-            // Для этого нам нужно знать высоту платформы, но поскольку мы её не знаем,
-            // мы можем аппроксимировать, установив Y позицию так, чтобы она была чуть выше Y позиции платформы
-            // Это значение "platformTopY" должно быть вычислено или передано в метод при вызове
-            double platformTopY = position.getY(); // Примерное вычисление
-            double platformX = position.getX();
-            position = new Point2D(platformX, platformTopY);
-        } else if (velocity.getY() < 0) {
-            velocity = new Point2D(velocity.getX(), 20);
-
-            fall(timeDelta);
-            double platformBottomY = position.getY(); // Примерное вычисление
-            double platformX = position.getX();
-            if (velocity.getX() > 0) {
-                platformX = position.getX() - 20;
-            } else if (velocity.getX() < 0) {
-                platformX = position.getX() + 20;
-            }
-            position = new Point2D(platformX, platformBottomY);
+    public void land() {
+        if (velocity.getY() > 0) {
+            velocity = new Point2D(velocity.getX(), 0);
+            onPlatform = true;
         }
     }
 
@@ -218,13 +200,38 @@ public abstract class MovingEntity extends GameEntity implements Collisionable {
 
     @Override
     public void hitBy(Collisionable another) {
-        if (another instanceof Platform) {
-            onPlatform = true;
+        if (another instanceof Platform platform && !onLadder) {
+            resolvePlatformCollision(platform);
         }
         if (another instanceof Ladder) {
             nearLadder = true;
         } else {
             nearLadder = false;
+        }
+    }
+
+    private void resolvePlatformCollision(Platform platform) {
+        Rectangle2D box = platform.getBoundingBox();
+        double overlapTop = position.getY() + height - box.getMinY();
+        double overlapBottom = box.getMaxY() - position.getY();
+        double overlapLeft = position.getX() + width - box.getMinX();
+        double overlapRight = box.getMaxX() - position.getX();
+
+        if (overlapTop <= STEP_TOLERANCE) {
+            position = new Point2D(position.getX(), box.getMinY() - height);
+            if (velocity.getY() > 0) {
+                velocity = new Point2D(velocity.getX(), 0);
+            }
+            onPlatform = true;
+        } else if (overlapBottom <= STEP_TOLERANCE) {
+            position = new Point2D(position.getX(), box.getMaxY());
+            if (velocity.getY() < 0) {
+                velocity = new Point2D(velocity.getX(), 0);
+            }
+        } else if (overlapLeft < overlapRight) {
+            position = new Point2D(box.getMinX() - width, position.getY());
+        } else {
+            position = new Point2D(box.getMaxX(), position.getY());
         }
     }
 }
