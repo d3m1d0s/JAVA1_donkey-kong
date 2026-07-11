@@ -112,33 +112,25 @@ public abstract class MovingEntity extends GameEntity implements Collisionable {
         }
     }
 
-    public void climbLadder(double deltaY) {
-        if (onLadder) {
-            position = position.add(0, deltaY);
-        }
-    }
-
     public void startClimbing() {
         onLadder = true;
-        velocity = new Point2D(0, 0); // Останавливаем движение, когда начинаем взбираться
+        velocity = new Point2D(0, 0);
     }
 
     public void stopClimbing() {
         onLadder = false;
     }
 
-    public boolean isNearLadder() {
-        return nearLadder;
+    public boolean isClimbing() {
+        return onLadder;
     }
 
     public boolean isOnLadder() {
         for (Ladder ladder : game.getLadders()) {
             if (this.getBoundingBox().intersects(ladder.getBoundingBox())) {
-                onLadder = true;
                 return true;
             }
         }
-        onLadder = false;
         return false;
     }
 
@@ -171,9 +163,6 @@ public abstract class MovingEntity extends GameEntity implements Collisionable {
     public void hitBy(Collisionable another) {
         if (another instanceof Platform) {
             onPlatform = true;
-            if (isOnLadder()) {
-                stopClimbing();
-            }
         }
         if (another instanceof Ladder) {
             nearLadder = true;

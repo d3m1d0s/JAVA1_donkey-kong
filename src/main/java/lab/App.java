@@ -32,6 +32,11 @@ public class App extends Application {
 			primaryStage.setTitle("Donkey Kong");
 			primaryStage.setResizable(false);
 			primaryStage.setOnCloseRequest(this::exitProgram);
+			primaryStage.focusedProperty().addListener((obs, wasFocused, isFocused) -> {
+				if (!isFocused) {
+					gameController.clearInput();
+				}
+			});
 			primaryStage.show();
 
 			// Запуск игры

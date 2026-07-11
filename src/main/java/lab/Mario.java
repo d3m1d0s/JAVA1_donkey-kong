@@ -64,18 +64,6 @@ public class Mario extends WalkingEnemy {
         this.lostTheLife = false;
     }
 
-    public void moveRight() {
-        setVelocity(new Point2D(100, getVelocity().getY())); // Например, скорость 100 вправо
-    }
-
-    public void moveLeft() {
-        setVelocity(new Point2D(-100, getVelocity().getY())); // Например, скорость 100 влево
-    }
-
-    public void stopMoving() {
-        setVelocity(new Point2D(0, getVelocity().getY())); // Остановка горизонтального движения
-    }
-
     @Override
     public void simulate(double timeDelta) {
         timeSinceHit += timeDelta;
@@ -94,20 +82,13 @@ public class Mario extends WalkingEnemy {
             this.lostTheLife = false; // ignore hits taken during the immunity window
         }
 
-        if (onLadder) {
-            // Логика движения по лестнице
-            // Например, изменение position в зависимости от направления движения по лестнице
-        } else {
-            super.simulate(timeDelta);
-            if (
-                    (position.getX() < 0) || (position.getX() > game.getWidth()) ||
-                    (position.getY() < -50) || (position.getY() > game.getHeight())
-            ) {
-                lostTheLife = true;
-            }
+        super.simulate(timeDelta);
+        if (
+                (position.getX() < 0) || (position.getX() > game.getWidth()) ||
+                (position.getY() < -50) || (position.getY() > game.getHeight())
+        ) {
+            lostTheLife = true;
         }
-        // Дополнительная логика
-        // ...
     }
 
     @Override
