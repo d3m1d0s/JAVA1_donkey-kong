@@ -20,13 +20,6 @@ public class Ladder extends GameEntity implements Collisionable{
                 true, true);
     }
 
-    public boolean isAtBottom(Point2D entityPosition, double entityHeight) {
-        // Проверяем, находится ли бочка в нижней части лестницы
-        double ladderBottom = getPosition().getY() + getHeight();
-        double entityBottom = entityPosition.getY() + entityHeight;
-        return entityBottom >= ladderBottom; // или другая логика, соответствующая вашим требованиям
-    }
-
     @Override
     protected void drawInternal(GraphicsContext gc) {
         gc.drawImage(image, position.getX(), position.getY(), width, height);

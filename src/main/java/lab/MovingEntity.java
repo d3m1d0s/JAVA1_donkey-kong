@@ -8,7 +8,7 @@ import javafx.scene.image.Image;
 public abstract class MovingEntity extends GameEntity implements Collisionable {
     protected static final double GRAVITY = 200;
     private static final double LADDER_GRAB_MARGIN = 6;
-    // overlaps this shallow count as steps of the sloped rows or landings, not wall hits
+    // max step height
     private static final double STEP_TOLERANCE = 10;
     protected Point2D velocity;
     protected double width;
@@ -16,6 +16,7 @@ public abstract class MovingEntity extends GameEntity implements Collisionable {
     protected boolean onPlatform = false;
     protected boolean onLadder = false;
     protected boolean nearLadder = false;
+    private double climbStartBottom;
     protected Image imageR;
     protected Image imageL;
     int imgR = 1;
@@ -38,11 +39,29 @@ public abstract class MovingEntity extends GameEntity implements Collisionable {
                 return;
             }
             if (!touchesAnyLadder()) {
+                boolean wasDescending = velocity.getY() > 0;
                 stopClimbing();
                 velocity = new Point2D(velocity.getX(), 0);
+                if (wasDescending) {
+                    settleAfterDescent();
+                }
             }
         } else {
             standardMovementLogic(timeDelta);
+        }
+    }
+
+    // some ladders end a few px above the platform
+    private void settleAfterDescent() {
+        double bottom = position.getY() + height;
+        for (Platform platform : game.getPlatforms()) {
+            Rectangle2D box = platform.getBoundingBox();
+            boolean overlapsX = position.getX() + width > box.getMinX() && position.getX() < box.getMaxX();
+            if (overlapsX && Math.abs(box.getMinY() - bottom) <= 16) {
+                position = new Point2D(position.getX(), box.getMinY() - height);
+                onPlatform = true;
+                return;
+            }
         }
     }
 
@@ -50,10 +69,11 @@ public abstract class MovingEntity extends GameEntity implements Collisionable {
         double bottom = position.getY() + height;
         for (Platform platform : game.getPlatforms()) {
             Rectangle2D box = platform.getBoundingBox();
-            // only a fresh crossing of the top counts, so the descent can pass through the platform it started from
+            // don't land back on the row we started from
+            boolean belowStart = box.getMinY() > climbStartBottom + STEP_TOLERANCE;
             boolean crossedTop = previousBottom < box.getMinY() && bottom > box.getMinY();
             boolean overlapsX = position.getX() + width > box.getMinX() && position.getX() < box.getMaxX();
-            if (crossedTop && overlapsX) {
+            if (belowStart && crossedTop && overlapsX) {
                 position = new Point2D(position.getX(), box.getMinY() - height);
                 stopClimbing();
                 velocity = new Point2D(velocity.getX(), 0);
@@ -122,6 +142,7 @@ public abstract class MovingEntity extends GameEntity implements Collisionable {
     public void startClimbing() {
         onLadder = true;
         velocity = new Point2D(0, 0);
+        climbStartBottom = position.getY() + height;
     }
 
     public void stopClimbing() {
@@ -168,7 +189,7 @@ public abstract class MovingEntity extends GameEntity implements Collisionable {
         return false;
     }
 
-    // the grab zone reaches past both ladder ends: the generated level leaves small gaps there
+    // ladders don't quite touch the platforms, so the grab zone sticks out on both ends
     private Rectangle2D grabBox(Ladder ladder) {
         Rectangle2D strip = ladder.getBoundingBox();
         return new Rectangle2D(strip.getMinX(), strip.getMinY() - LADDER_GRAB_MARGIN,
@@ -177,7 +198,6 @@ public abstract class MovingEntity extends GameEntity implements Collisionable {
 
     @Override
     protected void drawInternal(GraphicsContext gc) {
-        // face the actual movement direction; velocity alone lies on the reversed barrel lanes
         double dx = position.getX() - lastDrawnX;
         lastDrawnX = position.getX();
         if (dx > 0) {
