@@ -100,7 +100,7 @@ public class Mario extends WalkingEnemy {
 
         super.simulate(timeDelta);
         if (
-                (position.getX() < 0) || (position.getX() > game.getWidth()) ||
+                (position.getX() + width < 0) || (position.getX() > game.getWidth()) ||
                 (position.getY() < -50) || (position.getY() > game.getHeight())
         ) {
             lostTheLife = true;
