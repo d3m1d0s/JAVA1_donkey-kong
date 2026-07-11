@@ -34,11 +34,18 @@ public class GameController {
 
         // Настройка анимационного таймера
         animationTimer = new AnimationTimer() {
+            private long lastTime;
+
             @Override
             public void handle(long now) {
-                applyInput();
-                game.simulate(1.0 / 60); // Предположим, что метод simulate принимает deltaTime
+                if (lastTime > 0) {
+                    // cap the delta so a stalled frame cannot tunnel entities through platforms
+                    double timeDelta = Math.min((now - lastTime) / 1e9, 0.1);
+                    applyInput();
+                    game.simulate(timeDelta);
+                }
                 game.draw(canvas.getGraphicsContext2D());
+                lastTime = now;
             }
         };
 

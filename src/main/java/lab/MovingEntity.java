@@ -17,6 +17,7 @@ public abstract class MovingEntity extends GameEntity implements Collisionable {
     protected Image imageR;
     protected Image imageL;
     int imgR = 1;
+    private double lastDrawnX;
 
     public MovingEntity(Game game, Point2D position, double width, double height, Point2D velocity) {
         super(game, position);
@@ -190,17 +191,15 @@ public abstract class MovingEntity extends GameEntity implements Collisionable {
 
     @Override
     protected void drawInternal(GraphicsContext gc) {
-        if (velocity.getX() > 0) {
+        // face the actual movement direction; velocity alone lies on the reversed barrel lanes
+        double dx = position.getX() - lastDrawnX;
+        lastDrawnX = position.getX();
+        if (dx > 0) {
             imgR = 1;
-            gc.drawImage(imageR, position.getX(), position.getY(), width, height);
-        } else if (velocity.getX() < 0) {
+        } else if (dx < 0) {
             imgR = 0;
-            gc.drawImage(imageL, position.getX(), position.getY(), width, height);
-        } else if (imgR == 1) {
-            gc.drawImage(imageR, position.getX(), position.getY(), width, height);
-        } else if (imgR == 0) {
-            gc.drawImage(imageL, position.getX(), position.getY(), width, height);
         }
+        gc.drawImage(imgR == 1 ? imageR : imageL, position.getX(), position.getY(), width, height);
     }
 
     @Override

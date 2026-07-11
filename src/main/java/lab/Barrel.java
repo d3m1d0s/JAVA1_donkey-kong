@@ -3,11 +3,7 @@ package lab;
 import javafx.geometry.Point2D;
 import javafx.scene.image.Image;
 
-import java.util.Random;
-
 public class Barrel extends WalkingEnemy {
-    private Random random = new Random();
-    private Ladder currentLadder = null;
     private boolean shouldBeRemoved = false;
 
 
@@ -19,66 +15,21 @@ public class Barrel extends WalkingEnemy {
 
     @Override
     public void simulate(double timeDelta) {
-        // Обработка движения
-        if (onLadder) {
-            // Движение по лестнице
-            position = position.add(0, velocity.getY() * timeDelta);
-            if (currentLadder != null && position.getY() > currentLadder.getPosition().getY() + currentLadder.getHeight()) {
-                stopClimbing();
-            }
-        } else if (onPlatform) {
-            // Движение по платформе
-            position = position.add(velocity.getX() * timeDelta, 0);
-            // Отражение от стенок
+        if (onPlatform) {
             if (position.getX() < 50 || position.getX() > game.getWidth() - width - 50) {
                 velocity = new Point2D(-velocity.getX(), velocity.getY());
             }
+            // rows 3 and 5 are reversed lanes: there the barrel travels against its velocity
             if (position.getY() > 291.5 - height && position.getY() < 335.5) {
-                position = position.add(-4 * velocity.getX() * timeDelta, 0);
+                position = position.add(-2 * velocity.getX() * timeDelta, 0);
             }
             if (position.getY() > 488.5 - height && position.getY() < 532.5) {
-                position = position.add(-4 * velocity.getX() * timeDelta, 0);
-            }
-            // Определение нахождения бочки на лестнице
-
-            for (Ladder ladder : game.getLadders()) {
-                if (this.intersects(ladder.getBoundingBox())) {
-                    // Проверка, является ли это лестницей, соприкасающейся с платформой
-                    if (ladder.isAtBottom(position, height)) {
-                        // Бочка должна "провалиться" сквозь сегмент лестницы
-                        continue;
-                    }
-                    nearLadder = true;
-                    // Решение о спуске по лестнице принимается только если прошло достаточно времени
-
-                    if (random.nextBoolean()) {
-                        startClimbing();
-                        currentLadder = ladder;
-                    }
-
-                }
+                position = position.add(-2 * velocity.getX() * timeDelta, 0);
             }
             standardMovementLogic(timeDelta);
         } else {
-            // Падение
             fall(timeDelta);
         }
-    }
-
-    // Оставшиеся методы класса Barrel...
-    // ...
-
-    @Override
-    public void startClimbing() {
-        onLadder = true;
-        velocity = new Point2D(0, 50); // Скорость спуска по лестнице
-    }
-
-    @Override
-    public void stopClimbing() {
-        onLadder = false;
-        velocity = new Point2D(velocity.getX(), 0); // Восстанавливаем горизонтальное движение
-        currentLadder = null;
     }
 
     @Override

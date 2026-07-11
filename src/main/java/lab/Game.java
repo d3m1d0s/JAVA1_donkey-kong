@@ -336,7 +336,7 @@ public class Game {
         double barrelWidth = 20; // Примерная ширина бочки
         double barrelHeight = 20; // Примерная высота бочки
         Point2D spawnPosition = new Point2D(50, 180); // Примерная начальная позиция
-        Point2D velocity = new Point2D(100, 0); // Примерная скорость
+        Point2D velocity = new Point2D(200, 0);
 
         int chance = random.nextInt(100);
 
