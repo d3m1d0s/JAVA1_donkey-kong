@@ -3,9 +3,11 @@ package lab;
 import javafx.geometry.Point2D;
 import javafx.geometry.Rectangle2D;
 import javafx.scene.canvas.GraphicsContext;
-import javafx.scene.paint.Color;
+import javafx.scene.image.Image;
 
 public class Platform extends GameEntity implements Collisionable {
+    private static final Image TEXTURE = new Image(Platform.class.getResourceAsStream("platform.png"));
+
     private Point2D size;
 
     public Platform(Game game, Point2D position, Point2D size) {
@@ -15,8 +17,12 @@ public class Platform extends GameEntity implements Collisionable {
 
     @Override
     protected void drawInternal(GraphicsContext gc) {
-        gc.setFill(Color.BROWN); // Цвет платформы
-        gc.fillRect(position.getX(), position.getY(), size.getX(), size.getY());
+        double sourceHeight = TEXTURE.getHeight();
+        double sourceWidth = sourceHeight * size.getX() / size.getY();
+        // slice offset depends on the position so neighboring segments don't repeat
+        double sourceX = (position.getX() * 7 + position.getY() * 3) % (TEXTURE.getWidth() - sourceWidth);
+        gc.drawImage(TEXTURE, sourceX, 0, sourceWidth, sourceHeight,
+                position.getX(), position.getY(), size.getX(), size.getY());
     }
 
     @Override
