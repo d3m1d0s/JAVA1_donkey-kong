@@ -11,7 +11,7 @@ public class Mario extends WalkingEnemy {
     private int score = 0;
     private int lifes = 3;
     private static final double IMMUNITY_TIME = 3.0; // 3 секунды бессмертия после потери жизни
-    private double lastHitTime = -IMMUNITY_TIME; // Время последней потери жизни
+    private double timeSinceHit = IMMUNITY_TIME; // starts expired so the first hit counts immediately
     public Mario(Game game, Point2D position, double width, double height, Point2D velocity) {
         super(game, position, width, height, new Point2D(0,0));
         this.imageR = new Image(getClass().getResourceAsStream("mario_go_right.gif"), width, height,
@@ -78,18 +78,20 @@ public class Mario extends WalkingEnemy {
 
     @Override
     public void simulate(double timeDelta) {
-        double currentTime = System.nanoTime() / 1e9;
+        timeSinceHit += timeDelta;
 
-        if (this.lostTheLife && currentTime - lastHitTime >= IMMUNITY_TIME) {
-            lastHitTime = currentTime; // Обновляем время последней потери жизни
-            this.lostTheLife = false; // Сбрасываем флаг потери жизни
-            this.lifes--; // Отнимаем одну жизнь
+        if (this.lostTheLife && timeSinceHit >= IMMUNITY_TIME) {
+            timeSinceHit = 0;
+            this.lostTheLife = false;
+            this.lifes--;
 
             if ((this.lifes <= 0) || (this.savedThePrincess)) {
                 this.game.gameOver(); // Игра заканчивается, если жизни кончились
             } else {
                 setPosition(new Point2D(100, 670));
             }
+        } else if (this.lostTheLife) {
+            this.lostTheLife = false; // ignore hits taken during the immunity window
         }
 
         if (onLadder) {
