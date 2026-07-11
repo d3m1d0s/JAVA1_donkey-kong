@@ -2,6 +2,7 @@ package lab;
 
 import javafx.geometry.Point2D;
 import javafx.geometry.Rectangle2D;
+import javafx.scene.canvas.GraphicsContext;
 import javafx.scene.image.Image;
 
 public class Mario extends WalkingEnemy {
@@ -15,12 +16,30 @@ public class Mario extends WalkingEnemy {
     // jump keeps working this long after the last ground contact
     private static final double JUMP_GRACE_TIME = 0.1;
     private double timeSinceGrounded = 1;
+    private final Image imageUp;
+
     public Mario(Game game, Point2D position, double width, double height) {
         super(game, position, width, height, new Point2D(0, 0));
         this.imageR = new Image(getClass().getResourceAsStream("mario_go_right.gif"), width, height,
                 true, true);
         this.imageL = new Image(getClass().getResourceAsStream("mario_go_left.gif"), width, height,
                 true, true);
+        this.imageUp = new Image(getClass().getResourceAsStream("mario_up.png"), width, height,
+                true, true);
+    }
+
+    @Override
+    protected void drawInternal(GraphicsContext gc) {
+        if (isClimbing()) {
+            if (imgR == 0) {
+                // the climb sprite faces right, negative width mirrors it
+                gc.drawImage(imageUp, position.getX() + width, position.getY(), -width, height);
+            } else {
+                gc.drawImage(imageUp, position.getX(), position.getY(), width, height);
+            }
+        } else {
+            super.drawInternal(gc);
+        }
     }
 
     public void setVelocity(Point2D velocity) {
