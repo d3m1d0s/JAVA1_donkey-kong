@@ -333,6 +333,10 @@ public class Game {
                     }
                 }
             }
+
+            if (mario.getSavedThePrincess() || mario.getLifes() <= 0) {
+                gameOver();
+            }
         }
     }
 

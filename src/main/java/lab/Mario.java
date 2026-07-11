@@ -73,9 +73,7 @@ public class Mario extends WalkingEnemy {
             this.lostTheLife = false;
             this.lifes--;
 
-            if ((this.lifes <= 0) || (this.savedThePrincess)) {
-                this.game.gameOver(); // Игра заканчивается, если жизни кончились
-            } else {
+            if (this.lifes > 0) {
                 setPosition(new Point2D(100, 670));
             }
         } else if (this.lostTheLife) {

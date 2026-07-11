@@ -34,22 +34,6 @@ public class Score extends GameEntity {
         gc.fillText("Score: " + String.valueOf(game.getMario().getScore()), this.game.getWidth() / 2.0 - 75.0, this.game.getHeight() / 2.0 + 60.0);
     }
 
-    public boolean isGameOver() {
-        return (game.getMario().getSavedThePrincess() || (game.getMario().getLifes() == 0));
-    }
-
-    public void checkGameOver(GraphicsContext gc) {
-        if (this.isGameOver()) {
-            if (this.game.getMario().getSavedThePrincess()) {
-                game.gameOver();
-            }
-            if (this.game.getMario().getLifes() <= 0) {
-                game.gameOver();
-            }
-            this.printGameOver(gc);
-        }
-    }
-
     @Override
     public void simulate(double timeDelta) {
 
@@ -67,6 +51,8 @@ public class Score extends GameEntity {
         gc.fillText("Life: " + String.valueOf(game.getMario().getLifes()), 0.0, this.brink * 5.0);
         gc.setFont(Font.font("Nevim jaky font", FontWeight.BOLD, this.brink * 2.0));
         gc.fillText("Score " + String.valueOf(game.getMario().getScore()), 0.0, this.brink * 2.5);
-        this.checkGameOver(gc);
+        if (game.getIsGameOver()) {
+            printGameOver(gc);
+        }
     }
 }
