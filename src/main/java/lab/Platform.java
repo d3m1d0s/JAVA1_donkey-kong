@@ -5,7 +5,7 @@ import javafx.geometry.Rectangle2D;
 import javafx.scene.canvas.GraphicsContext;
 import javafx.scene.image.Image;
 
-public class Platform extends GameEntity implements Collisionable {
+public class Platform extends GameEntity implements Collidable {
     private static final Image TEXTURE = new Image(Platform.class.getResourceAsStream("platform.png"));
 
     private Point2D size;
@@ -40,7 +40,7 @@ public class Platform extends GameEntity implements Collisionable {
     }
 
     @Override
-    public void hitBy(Collisionable another) {
+    public void hitBy(Collidable another) {
 
     }
 }

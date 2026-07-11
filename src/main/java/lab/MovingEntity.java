@@ -5,7 +5,7 @@ import javafx.geometry.Rectangle2D;
 import javafx.scene.canvas.GraphicsContext;
 import javafx.scene.image.Image;
 
-public abstract class MovingEntity extends GameEntity implements Collisionable {
+public abstract class MovingEntity extends GameEntity implements Collidable {
     protected static final double GRAVITY = 200;
     private static final double LADDER_GRAB_MARGIN = 6;
     // max step height
@@ -18,7 +18,7 @@ public abstract class MovingEntity extends GameEntity implements Collisionable {
     private double climbStartBottom;
     protected Image imageR;
     protected Image imageL;
-    int imgR = 1;
+    protected boolean facingRight = true;
     private double lastDrawnX;
 
     public MovingEntity(Game game, Point2D position, double width, double height, Point2D velocity) {
@@ -194,11 +194,11 @@ public abstract class MovingEntity extends GameEntity implements Collisionable {
         double dx = position.getX() - lastDrawnX;
         lastDrawnX = position.getX();
         if (dx > 0) {
-            imgR = 1;
+            facingRight = true;
         } else if (dx < 0) {
-            imgR = 0;
+            facingRight = false;
         }
-        gc.drawImage(imgR == 1 ? imageR : imageL, position.getX(), position.getY(), width, height);
+        gc.drawImage(facingRight ? imageR : imageL, position.getX(), position.getY(), width, height);
     }
 
     @Override
@@ -212,7 +212,7 @@ public abstract class MovingEntity extends GameEntity implements Collisionable {
     }
 
     @Override
-    public void hitBy(Collisionable another) {
+    public void hitBy(Collidable another) {
         if (another instanceof Platform platform && !onLadder) {
             resolvePlatformCollision(platform);
         }

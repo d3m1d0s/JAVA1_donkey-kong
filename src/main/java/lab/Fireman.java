@@ -5,7 +5,7 @@ import javafx.scene.image.Image;
 
 import java.util.Random;
 
-public class Fireman extends WalkingEnemy {
+public class Fireman extends WalkingCharacter {
     private static final double TURN_ROLL_INTERVAL = 0.7;
     private static final double CLIMB_UP_SPEED = 30;
     private static final double CLIMB_DOWN_SPEED = 80;

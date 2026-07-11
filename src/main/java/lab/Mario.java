@@ -5,12 +5,12 @@ import javafx.geometry.Rectangle2D;
 import javafx.scene.canvas.GraphicsContext;
 import javafx.scene.image.Image;
 
-public class Mario extends WalkingEnemy {
+public class Mario extends WalkingCharacter {
     private boolean lostTheLife = false;
     private boolean savedThePrincess = false;
     private boolean jumpBonusPaid = true;
     private int score = 0;
-    private int lifes = 3;
+    private int lives = 3;
     private static final double IMMUNITY_TIME = 3.0;
     private double timeSinceHit = IMMUNITY_TIME; // starts expired so the first hit counts immediately
     // jump keeps working this long after the last ground contact
@@ -31,7 +31,7 @@ public class Mario extends WalkingEnemy {
     @Override
     protected void drawInternal(GraphicsContext gc) {
         if (isClimbing()) {
-            if (imgR == 0) {
+            if (!facingRight) {
                 // the climb sprite faces right, negative width mirrors it
                 gc.drawImage(imageUp, position.getX() + width, position.getY(), -width, height);
             } else {
@@ -67,8 +67,8 @@ public class Mario extends WalkingEnemy {
         return velocity;
     }
 
-    public int getLifes() {
-        return lifes;
+    public int getLives() {
+        return lives;
     }
 
     public int getScore() {
@@ -95,9 +95,9 @@ public class Mario extends WalkingEnemy {
         if (this.lostTheLife && timeSinceHit >= IMMUNITY_TIME) {
             timeSinceHit = 0;
             this.lostTheLife = false;
-            this.lifes--;
+            this.lives--;
 
-            if (this.lifes > 0) {
+            if (this.lives > 0) {
                 setPosition(new Point2D(100, 670));
             }
         } else if (this.lostTheLife) {
@@ -114,12 +114,12 @@ public class Mario extends WalkingEnemy {
     }
 
     @Override
-    public Rectangle2D getBoundingBox2() {
+    public Rectangle2D getNearMissBox() {
         return new Rectangle2D(position.getX(), position.getY(), width, height);
     }
 
     @Override
-    public void hitBy(Collisionable another) {
+    public void hitBy(Collidable another) {
         super.hitBy(another);
         if (another instanceof MovingEntity || another instanceof DonkeyKong || another instanceof FireBarrel) {
             lostTheLife = true;

@@ -5,7 +5,7 @@ import javafx.geometry.Rectangle2D;
 import javafx.scene.canvas.GraphicsContext;
 import javafx.scene.image.Image;
 
-public class Princess extends GameEntity implements Collisionable {
+public class Princess extends GameEntity implements Collidable {
     private double width;
     private double height;
     private Image image;
@@ -38,7 +38,7 @@ public class Princess extends GameEntity implements Collisionable {
     }
 
     @Override
-    public void hitBy(Collisionable another) {
+    public void hitBy(Collidable another) {
 
     }
 }

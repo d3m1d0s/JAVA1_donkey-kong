@@ -5,7 +5,7 @@ import javafx.scene.image.Image;
 
 import java.util.Random;
 
-public class Barrel extends WalkingEnemy {
+public class Barrel extends WalkingCharacter {
     private static final double LADDER_DESCENT_SPEED = 150;
     // ladder levels below the spawn row on this map
     private static final int MAX_DESCENTS = 4;
@@ -72,7 +72,7 @@ public class Barrel extends WalkingEnemy {
     }
 
     @Override
-    public void hitBy(Collisionable another) {
+    public void hitBy(Collidable another) {
         super.hitBy(another);
         // don't move this to simulate, onPlatform flickers there
         if (another instanceof Platform && onPlatform && !onLadder) {
