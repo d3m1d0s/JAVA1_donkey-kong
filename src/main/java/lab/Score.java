@@ -2,19 +2,21 @@ package lab;
 
 import javafx.geometry.Point2D;
 import javafx.scene.canvas.GraphicsContext;
+import javafx.scene.image.Image;
 import javafx.scene.paint.Color;
 import javafx.scene.text.Font;
 import javafx.scene.text.FontWeight;
 
 public class Score extends GameEntity {
-    private double width;
-    private double height;
-    private int brink = 20;
+    private static final double HEART_SIZE = 24;
+    private static final double HEART_GAP = 4;
 
-    public Score(Game game, Point2D position, double width, double height) {
+    private int brink = 20;
+    private final Image heartImage = new Image(getClass().getResourceAsStream("health.png"),
+            HEART_SIZE, HEART_SIZE, true, true);
+
+    public Score(Game game, Point2D position) {
         super(game, position);
-        this.width = width;
-        this.height = height;
     }
 
     public void printGameOver(GraphicsContext gc) {
@@ -38,15 +40,13 @@ public class Score extends GameEntity {
     @Override
     protected void drawInternal(GraphicsContext gc) {
         gc.setFill(Color.LIGHTGRAY);
-
-        for(int gap = 1; this.brink * (double)gap <= this.height - 2.0 * this.brink; gap += 2) {
-            gc.fillRect((this.width - this.brink) / 2.0, this.brink * (double)gap, this.brink, this.brink);
-        }
-
-        gc.setFont(Font.font("Nevim jaky font", FontWeight.BOLD, this.brink * 2.0));
-        gc.fillText("Life: " + String.valueOf(game.getMario().getLifes()), 0.0, this.brink * 5.0);
         gc.setFont(Font.font("Nevim jaky font", FontWeight.BOLD, this.brink * 2.0));
         gc.fillText("Score " + String.valueOf(game.getMario().getScore()), 0.0, this.brink * 2.5);
+
+        for (int i = 0; i < game.getMario().getLifes(); i++) {
+            gc.drawImage(heartImage, i * (HEART_SIZE + HEART_GAP), this.brink * 3, HEART_SIZE, HEART_SIZE);
+        }
+
         if (game.getIsGameOver()) {
             printGameOver(gc);
         }

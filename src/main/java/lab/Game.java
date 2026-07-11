@@ -191,9 +191,7 @@ public class Game {
         this.fireBarrel = new FireBarrel(this, new Point2D(60, 671), fireBarrelWidth, fireBarrelHeight);
 
         //Score
-        double scoreWidth = brink * 2;
-        double scoreHeight = brink * 2;
-        this.score = new Score(this, new Point2D(0, 0), scoreWidth, scoreHeight);
+        this.score = new Score(this, new Point2D(0, 0));
 
         updateObjectsArray();
     }
