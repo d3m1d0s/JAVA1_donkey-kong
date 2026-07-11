@@ -16,8 +16,8 @@ import java.util.List;
 public class Game {
     private final double width;
     private final double height;
-    private static final double IMMUNITY_TIME = 1.0; // 3 секунды бессмертия после потери жизни
-    private double lastHitTime = -IMMUNITY_TIME; // Время последней потери жизни
+    private static final double JUMP_SCORE_COOLDOWN = 1.0;
+    private double timeSinceJumpScore = JUMP_SCORE_COOLDOWN;
 
     private boolean isStarted = false;
     private boolean isGameOver = false;
@@ -281,6 +281,7 @@ public class Game {
             }
 
             timeSinceLastSpawn += timeDelta;
+            timeSinceJumpScore += timeDelta;
             boolean removedAny = false;
             for (Iterator<Barrel> iterator = barrels.iterator(); iterator.hasNext();) {
                 Barrel barrel = iterator.next();
@@ -304,8 +305,6 @@ public class Game {
                 if (objects[i] instanceof Collisionable obj1Col) {
                     for (int j = i + 1; j < objects.length; j++) {
                         if (objects[j] instanceof Collisionable obj2Col) {
-                            if (obj1Col == obj2Col) {continue;} //pokud se narazi sam na sebe
-
                             if (obj1Col.intersects(obj2Col.getBoundingBox())) {
                                 obj1Col.hitBy(obj2Col);
                                 obj2Col.hitBy(obj1Col);
@@ -319,15 +318,15 @@ public class Game {
                 if (objects[i] instanceof WalkingEnemy obj1Col) {
                     for (int j = i + 1; j < objects.length; j++) {
                         if (objects[j] instanceof WalkingEnemy obj2Col) {
-                            double currentTime = System.nanoTime() / 1e9;
-                            if (obj1Col.intersects2(obj2Col.getBoundingBox2())&& currentTime - lastHitTime >= IMMUNITY_TIME) {
-                                if (obj1Col instanceof Mario || obj2Col instanceof Mario) {
-                                    if (obj1Col == obj2Col) {continue;} //pokud se narazi sam na sebe
-                                    lastHitTime = currentTime;
-                                    obj1Col.hitBy2(obj2Col);
-                                    obj2Col.hitBy2(obj1Col);
-                                    mario.setScore(mario.getScore() + 100);
-                                }
+                            if (!(obj1Col instanceof Mario) && !(obj2Col instanceof Mario)) {
+                                continue;
+                            }
+
+                            boolean nearMiss = obj1Col.intersects2(obj2Col.getBoundingBox2())
+                                    && !obj1Col.intersects(obj2Col.getBoundingBox());
+                            if (nearMiss && timeSinceJumpScore >= JUMP_SCORE_COOLDOWN) {
+                                timeSinceJumpScore = 0;
+                                mario.setScore(mario.getScore() + 100);
                             }
                         }
                     }

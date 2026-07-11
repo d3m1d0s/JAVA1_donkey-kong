@@ -20,8 +20,4 @@ public class WalkingEnemy extends MovingEntity {
     public void setPosition(Point2D position) {
         this.position = position;
     }
-
-    public void hitBy2(Collisionable another) {
-        super.hitBy(another);
-    }
 }

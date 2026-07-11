@@ -95,13 +95,6 @@ public class Mario extends WalkingEnemy {
     }
 
     @Override
-    public void hitBy2(Collisionable another) {
-        super.hitBy2(another);
-        if (another instanceof WalkingEnemy) {
-        }
-    }
-
-    @Override
     public void hitBy(Collisionable another) {
         super.hitBy(another);
         if (another instanceof MovingEntity || another instanceof DonkeyKong || another instanceof FireBarrel) {
