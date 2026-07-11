@@ -42,131 +42,17 @@ public class Game {
         this.barrels = new ArrayList<>();
         this.firemen = new ArrayList<>();
 
-        this.platforms = new ArrayList<>();
-
-        double ladderWidth = TILE_SIZE;
-        this.ladders = new ArrayList<>();
-
-        double platformHeight = TILE_SIZE;
-        double platformWidth = TILE_SIZE * 2;
-        int numberOfLevels = 7;
-
-        double verticalSpacing = (height - platformHeight * numberOfLevels) / (numberOfLevels + 1);
-
-        for (int i = 0; i < numberOfLevels; i++) {
-            double posX = i % 2 == 0 ? (width - platformWidth) / 2 - 11 * TILE_SIZE : (width - platformWidth) / 2 + 11 * TILE_SIZE;
-            double posY = verticalSpacing * (i + 1) + platformHeight * i;
-            posY += TILE_SIZE * 2;
-
-            double ladderHeight = TILE_SIZE;
-            if (i != 0) {
-                if (i % 2 != 0) {
-                    if (i != 1) {
-                        for (int j = 0; j < 13; j++) {
-                            if (j == 1 && i == 3) {
-                                for (double k = 0; k < 3 * TILE_SIZE; k += TILE_SIZE) {
-                                    this.ladders.add(new Ladder(this, new Point2D(posX, posY  + k), ladderWidth, ladderHeight));
-                                }
-                            } if (j == 1 && i == 5) {
-                                for (double k = 0; k < 4 * TILE_SIZE; k += TILE_SIZE) {
-                                    this.ladders.add(new Ladder(this, new Point2D(posX, posY  + k), ladderWidth, ladderHeight));
-                                }
-                            }
-                            else if (j == 7 && i == 5) {
-                                for (double k = 0; k < 5 * TILE_SIZE; k += TILE_SIZE) {
-                                    this.ladders.add(new Ladder(this, new Point2D(posX, posY  + k), ladderWidth, ladderHeight));
-                                }
-                            } else if (j == 5 && i == 3) {
-                                for (double k = 0; k < 4 * TILE_SIZE; k += TILE_SIZE) {
-                                    this.ladders.add(new Ladder(this, new Point2D(posX, posY  + k), ladderWidth, ladderHeight));
-                                }
-                            } else if (j == 9 && i == 3) {
-                                for (double k = 0; k < 5 * TILE_SIZE; k += TILE_SIZE) {
-                                    this.ladders.add(new Ladder(this, new Point2D(posX, posY  + k), ladderWidth, ladderHeight));
-                                }
-                            }
-                            this.platforms.add(new Platform(this, new Point2D(posX, posY), new Point2D(platformWidth, platformHeight)));
-                            posX -= TILE_SIZE * 2; posY-=2;
-                        }
-                    } else {
-                        for (int j = 0; j < 4; j++) {
-                            if (j == 1) {
-                                for (double k = 0; k < 3 * TILE_SIZE; k += TILE_SIZE) {
-                                    this.ladders.add(new Ladder(this, new Point2D(posX, posY  + k), ladderWidth, ladderHeight));
-                                }
-                            }
-                            this.platforms.add(new Platform(this, new Point2D(posX, posY), new Point2D(platformWidth, platformHeight)));
-                            posX -= TILE_SIZE * 2; posY-=2;
-                        }
-                        for (int j = 0; j < 9; j++) {
-                            if (j == 3) {
-                                for (double k = 0; k < 4 * TILE_SIZE; k += TILE_SIZE) {
-                                    this.ladders.add(new Ladder(this, new Point2D(posX, posY  +  k), ladderWidth, ladderHeight));
-                                }
-                            }
-                            this.platforms.add(new Platform(this, new Point2D(posX, posY), new Point2D(platformWidth, platformHeight)));
-                            posX -= TILE_SIZE * 2;
-                        }
-                    }
-                }
-
-                if (i % 2 == 0) {
-                    if (i != 6) {
-                        for (int j = 0; j < 13; j++) {
-                            if (j == 1) {
-                                for (double k = 0; k < 3 * TILE_SIZE; k += TILE_SIZE) {
-                                    this.ladders.add(new Ladder(this, new Point2D(posX, posY + k), ladderWidth, ladderHeight));
-                                }
-                            } else if (j == 3 && i == 2) {
-                                for (double k = 0; k < 4 * TILE_SIZE; k += TILE_SIZE) {
-                                    this.ladders.add(new Ladder(this, new Point2D(posX, posY + k), ladderWidth, ladderHeight));
-                                }
-                            } else if (j == 9 && i == 2) {
-                                for (double k = 0; k < 5 * TILE_SIZE; k += TILE_SIZE) {
-                                    this.ladders.add(new Ladder(this, new Point2D(posX, posY + k), ladderWidth, ladderHeight));
-                                }
-                            } else if (j == 5 && i == 4) {
-                                for (double k = 0; k < 4 * TILE_SIZE; k += TILE_SIZE) {
-                                    this.ladders.add(new Ladder(this, new Point2D(posX, posY + k), ladderWidth, ladderHeight));
-                                }
-                            }
-                            this.platforms.add(new Platform(this, new Point2D(posX, posY), new Point2D(platformWidth, platformHeight)));
-                            posX += TILE_SIZE * 2; posY-=2;
-                        }
-                    } else {
-                        posX -= TILE_SIZE * 2;
-                        for (int j = 0; j < 6; j++) {
-                            this.platforms.add(new Platform(this, new Point2D(posX, posY), new Point2D(platformWidth, platformHeight)));
-                            posX += TILE_SIZE * 2;
-                        }
-                        for (int j = 0; j < 8; j++) {
-                            this.platforms.add(new Platform(this, new Point2D(posX, posY), new Point2D(platformWidth, platformHeight)));
-                            posX += TILE_SIZE * 2; posY-=2;
-                        }
-                    }
-
-                }
-            } else {
-                posX += TILE_SIZE * 9;
-                for (int j = 0; j < 3; j++) {
-                    if (j == 2) {
-                        for (double k = 0; k < 4 * TILE_SIZE; k += TILE_SIZE) {
-                            this.ladders.add(new Ladder(this, new Point2D(posX, posY +2+ k), ladderWidth, ladderHeight));
-                        }
-                    }
-                    this.platforms.add(new Platform(this, new Point2D(posX, posY), new Point2D(platformWidth, platformHeight)));
-                    posX += TILE_SIZE * 2;
-                }
-            }
-        }
+        Level level = new Level(this, width, height);
+        this.platforms = level.getPlatforms();
+        this.ladders = level.getLadders();
 
         double donkeyKongWidth = TILE_SIZE * 4 * 1.5;
         double donkeyKongHeight = TILE_SIZE * 4;
-        this.donkeyKong = new DonkeyKong(this, new Point2D(100, 131), donkeyKongWidth, donkeyKongHeight);
+        this.donkeyKong = new DonkeyKong(this, Level.DONKEY_KONG_POSITION, donkeyKongWidth, donkeyKongHeight);
 
         double princessWidth = TILE_SIZE * 0.5;
         double princessHeight = TILE_SIZE;
-        this.princess = new Princess(this, new Point2D(280, 97), princessWidth, princessHeight);
+        this.princess = new Princess(this, Level.PRINCESS_POSITION, princessWidth, princessHeight);
 
         double marioWidth = TILE_SIZE;
         double marioHeight = TILE_SIZE;
@@ -174,11 +60,11 @@ public class Game {
 
         double firemanWidth = TILE_SIZE;
         double firemanHeight = TILE_SIZE;
-        this.firemen.add(new Fireman(this, new Point2D(180, 687), firemanWidth, firemanHeight, new Point2D(100, 0)));
+        this.firemen.add(new Fireman(this, Level.FIRST_FIREMAN_POSITION, firemanWidth, firemanHeight, new Point2D(100, 0)));
 
         double fireBarrelWidth = TILE_SIZE * 2;
         double fireBarrelHeight = TILE_SIZE * 2;
-        this.fireBarrel = new FireBarrel(this, new Point2D(60, 671), fireBarrelWidth, fireBarrelHeight);
+        this.fireBarrel = new FireBarrel(this, Level.FIRE_BARREL_POSITION, fireBarrelWidth, fireBarrelHeight);
 
         this.score = new Score(this, new Point2D(0, 0));
 
@@ -264,7 +150,7 @@ public class Game {
     private void spawnBarrel() {
         double barrelWidth = 20;
         double barrelHeight = 20;
-        Point2D spawnPosition = new Point2D(50, 180);
+        Point2D spawnPosition = Level.BARREL_SPAWN;
         Point2D velocity = new Point2D(120, 0);
 
         int chance = random.nextInt(100);
@@ -287,7 +173,7 @@ public class Game {
 
         double firemanWidth = 20;
         double firemanHeight = 20;
-        Point2D spawnPosition = new Point2D(60, 671);
+        Point2D spawnPosition = Level.FIREMAN_SPAWN;
         double speed = 70 + random.nextInt(61); // unequal speeds keep firemen from bunching up
         double direction = random.nextBoolean() ? 1 : -1;
         Point2D velocity = new Point2D(direction * speed, 0);
