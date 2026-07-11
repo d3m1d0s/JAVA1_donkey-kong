@@ -25,6 +25,7 @@ public class Game {
     private List<Barrel> barrels;
     private double timeSinceLastSpawn = 0;
     private final double spawnInterval = 3.0;
+    private static final int MAX_FIREMANS = 5;
     private List<Platform> platforms;
     private DonkeyKong donkeyKong;
     private Mario mario;
@@ -354,15 +355,20 @@ public class Game {
     }
 
     private void spawnFire() {
-        double firemanWidth = 20; // Примерная ширина Fireman
-        double firemanHeight = 20; // Примерная высота Fireman
-        Point2D spawnPosition = new Point2D(60, 671); // Примерная начальная позиция
-        Point2D velocity = new Point2D(100, 0); // Примерная скорость
+        if (firemans.size() >= MAX_FIREMANS) {
+            return;
+        }
 
-        // Добавляем нового fireman в список
+        Random random = new Random();
+        double firemanWidth = 20;
+        double firemanHeight = 20;
+        Point2D spawnPosition = new Point2D(60, 671);
+        double speed = 70 + random.nextInt(61); // 70..130, different speeds keep firemen from bunching up
+        double direction = random.nextBoolean() ? 1 : -1;
+        Point2D velocity = new Point2D(direction * speed, 0);
+
         this.firemans.add(new Fireman(this, spawnPosition, firemanWidth, firemanHeight, velocity));
 
-        // Обновляем массив objects
         updateObjectsArray();
     }
 
