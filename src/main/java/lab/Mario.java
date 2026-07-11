@@ -11,7 +11,7 @@ public class Mario extends WalkingEnemy {
     private boolean jumpBonusPaid = true;
     private int score = 0;
     private int lifes = 3;
-    private static final double IMMUNITY_TIME = 3.0; // 3 секунды бессмертия после потери жизни
+    private static final double IMMUNITY_TIME = 3.0;
     private double timeSinceHit = IMMUNITY_TIME; // starts expired so the first hit counts immediately
     // jump keeps working this long after the last ground contact
     private static final double JUMP_GRACE_TIME = 0.1;

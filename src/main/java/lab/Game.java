@@ -42,24 +42,17 @@ public class Game {
 
         this.platforms = new ArrayList<>();
 
-        //лестницы
-        // Инициализация лестниц
-        double ladderWidth = brink; // Примерная ширина лестницы
+        double ladderWidth = brink;
         this.ladders = new ArrayList<>();
 
-        //платформы
-        double platformHeight = brink; // Высота платформы
+        double platformHeight = brink;
         double platformWidth = brink * 2;
-        int numberOfLevels = 7; // Количество уровней платформ
+        int numberOfLevels = 7;
 
-        // Определяем вертикальное расстояние между платформами
         double verticalSpacing = (height - platformHeight * numberOfLevels) / (numberOfLevels + 1);
 
         for (int i = 0; i < numberOfLevels; i++) {
-            // Определяем X координату платформы
             double posX = i % 2 == 0 ? (width - platformWidth) / 2 - 11 * brink : (width - platformWidth) / 2 + 11 * brink;
-
-            // Определяем Y координату платформы
             double posY = verticalSpacing * (i + 1) + platformHeight * i;
             posY += brink * 2;
 
@@ -165,32 +158,26 @@ public class Game {
             }
         }
 
-        //Donkey Kong
-        double donkeyKongWidth = brink * 4 * 1.5; // Примерная ширина Donkey Kong
-        double donkeyKongHeight = brink * 4; // Примерная высота Donkey Kong
+        double donkeyKongWidth = brink * 4 * 1.5;
+        double donkeyKongHeight = brink * 4;
         this.donkeyKong = new DonkeyKong(this, new Point2D(100, 131), donkeyKongWidth, donkeyKongHeight);
 
-        //Princess
-        double princessWidth = brink * 0.5; // Примерная ширина Princess
-        double princessHeight = brink; // Примерная высота Princess
+        double princessWidth = brink * 0.5;
+        double princessHeight = brink;
         this.princess = new Princess(this, new Point2D(280, 97), princessWidth, princessHeight);
 
-        //Mario
-        double marioWidth = brink; // Примерная ширина Mario
-        double marioHeight = brink; // Примерная высота Mario
+        double marioWidth = brink;
+        double marioHeight = brink;
         this.mario = new Mario(this, new Point2D(100, 670), marioWidth, marioHeight);
 
-        //Fireman
-        double firemanWidth = brink; // Примерная ширина Fireman
-        double firemanHeight = brink; // Примерная высота Fireman
+        double firemanWidth = brink;
+        double firemanHeight = brink;
         this.firemans.add(new Fireman(this, new Point2D(180, 687), firemanWidth, firemanHeight, new Point2D(100, 0)));
 
-        //FireBarrel
-        double fireBarrelWidth = brink * 2; // Примерная ширина FireBarrel
-        double fireBarrelHeight = brink * 2; // Примерная высота FireBarrel
+        double fireBarrelWidth = brink * 2;
+        double fireBarrelHeight = brink * 2;
         this.fireBarrel = new FireBarrel(this, new Point2D(60, 671), fireBarrelWidth, fireBarrelHeight);
 
-        //Score
         this.score = new Score(this, new Point2D(0, 0));
 
         updateObjectsArray();
@@ -202,8 +189,6 @@ public class Game {
         gc.setFill(Color.BLACK);
         gc.fillRect(0,0,width,height);
 
-
-        // ... рисуем объекты ...
         for (DrawableSimulable obj : objects) {
             obj.draw(gc);
         }
@@ -211,7 +196,6 @@ public class Game {
 
     public void simulate(double timeDelta) {
         if (this.isStarted) {
-            // ... симуляция объектов ...
             for (DrawableSimulable obj : objects) {
                 obj.simulate(timeDelta);
             }
@@ -276,24 +260,21 @@ public class Game {
     }
 
     private void spawnBarrel() {
-        double barrelWidth = 20; // Примерная ширина бочки
-        double barrelHeight = 20; // Примерная высота бочки
-        Point2D spawnPosition = new Point2D(50, 180); // Примерная начальная позиция
+        double barrelWidth = 20;
+        double barrelHeight = 20;
+        Point2D spawnPosition = new Point2D(50, 180);
         Point2D velocity = new Point2D(120, 0);
 
         int chance = random.nextInt(100);
 
         if (chance < 25) {
-            // Создаем UniqueBarrel
             UniqueBarrel uniqueBarrel = new UniqueBarrel(this, spawnPosition, barrelWidth, barrelHeight, velocity);
             barrels.add(uniqueBarrel);
         } else {
-            // Создаем обычную Barrel
             Barrel barrel = new Barrel(this, spawnPosition, barrelWidth, barrelHeight, velocity);
             barrels.add(barrel);
         }
 
-        // Обновите массив objects, если он используется для отрисовки и симуляции всех объектов
         updateObjectsArray();
     }
 
@@ -305,7 +286,7 @@ public class Game {
         double firemanWidth = 20;
         double firemanHeight = 20;
         Point2D spawnPosition = new Point2D(60, 671);
-        double speed = 70 + random.nextInt(61); // 70..130, different speeds keep firemen from bunching up
+        double speed = 70 + random.nextInt(61); // unequal speeds keep firemen from bunching up
         double direction = random.nextBoolean() ? 1 : -1;
         Point2D velocity = new Point2D(direction * speed, 0);
 
@@ -315,25 +296,22 @@ public class Game {
     }
 
     private void updateObjectsArray() {
-        objects = new DrawableSimulable[platforms.size() + barrels.size() + ladders.size() + 5 + firemans.size()]; // +5 для DonkeyKong, Mario, Princess, Score и FireBarrel
+        // +5: DonkeyKong, Mario, Princess, FireBarrel, Score
+        objects = new DrawableSimulable[platforms.size() + barrels.size() + ladders.size() + 5 + firemans.size()];
         int index = 0;
 
-        // Добавляем платформы
         for (Platform platform : platforms) {
             objects[index++] = platform;
         }
 
-        // Добавляем лестницы
         for (Ladder ladder : ladders) {
             objects[index++] = ladder;
         }
 
-        // Добавляем бочки
         for (Barrel barrel : barrels) {
             objects[index++] = barrel;
         }
 
-        // Добавляем персонажей
         objects[index++] = donkeyKong;
         objects[index++] = mario;
         objects[index++] = princess;

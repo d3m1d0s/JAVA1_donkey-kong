@@ -25,11 +25,11 @@ public class Ladder extends GameEntity implements Collisionable{
 
     @Override
     public void simulate(double timeDelta) {
-        // Donkey Kong обычно не двигается, так что здесь ничего не происходит.
     }
 
     @Override
     public Rectangle2D getBoundingBox() {
+        // 1px line down the middle
         return new Rectangle2D(position.getX() + 10, position.getY(), 1, height);
     }
 

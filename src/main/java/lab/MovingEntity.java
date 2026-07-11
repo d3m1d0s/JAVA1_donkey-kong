@@ -90,7 +90,6 @@ public abstract class MovingEntity extends GameEntity implements Collisionable {
         if (!onPlatform) {
             fall(timeDelta);
         } else {
-            // Определение платформы непосредственно под бочкой
             Platform platformUnderEntity = null;
             for (Platform platform : game.getPlatforms()) {
                 if (this.getBoundingBox().intersects(platform.getBoundingBox())) {
@@ -100,15 +99,13 @@ public abstract class MovingEntity extends GameEntity implements Collisionable {
             }
 
             if (platformUnderEntity != null) {
-                // Проверяем, можем ли мы поднять бочку на платформу
                 double platformTopY = platformUnderEntity.getPosition().getY();
                 double entityBottomY = position.getY() + height;
 
                 if (Math.abs(entityBottomY - platformTopY) <= 5) {
-                    // Поднимаем бочку на уровень платформы
                     position = new Point2D(position.getX(), platformTopY - height);
                 } else {
-                    // Бочка достигла края платформы и должна упасть
+                    // walked off the edge
                     onPlatform = false;
                 }
             } else {
@@ -116,9 +113,7 @@ public abstract class MovingEntity extends GameEntity implements Collisionable {
             }
         }
 
-        // Обновляем положение бочки с учетом ее скорости
         position = position.add(velocity.multiply(timeDelta));
-        // В этом месте могут быть добавлены столкновения и другая логика симуляции.
     }
 
     public void fall(double timeDelta) {

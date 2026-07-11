@@ -40,7 +40,7 @@ public class Score extends GameEntity {
     @Override
     protected void drawInternal(GraphicsContext gc) {
         gc.setFill(Color.LIGHTGRAY);
-        gc.setFont(Font.font("Nevim jaky font", FontWeight.BOLD, this.brink * 2.0));
+        gc.setFont(Font.font("Arial", FontWeight.BOLD, this.brink * 2.0));
         gc.fillText("Score " + String.valueOf(game.getMario().getScore()), 0.0, this.brink * 2.5);
 
         for (int i = 0; i < game.getMario().getLifes(); i++) {

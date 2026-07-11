@@ -25,7 +25,6 @@ public class FireBarrel extends GameEntity implements Collisionable {
 
     @Override
     public void simulate(double timeDelta) {
-        // обычно не двигается, так что здесь ничего не происходит.
     }
 
     @Override

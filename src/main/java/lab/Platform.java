@@ -27,7 +27,6 @@ public class Platform extends GameEntity implements Collisionable {
 
     @Override
     public void simulate(double timeDelta) {
-        // Платформы статичны, так что здесь ничего не происходит.
     }
 
     @Override
@@ -44,7 +43,4 @@ public class Platform extends GameEntity implements Collisionable {
     public void hitBy(Collisionable another) {
 
     }
-
-
-    // Методы для обновления позиции платформы, если это необходимо
 }

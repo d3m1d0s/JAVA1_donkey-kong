@@ -23,9 +23,8 @@ public class App extends Application {
 			root.getChildren().add(canvas);
 			Scene scene = new Scene(root, 672, 768);
 
-			// Инициализация GameController
 			gameController = new GameController(canvas);
-			gameController.initializeControlHandlers(scene); // Установка обработчиков управления
+			gameController.initializeControlHandlers(scene);
 
 			scene.getStylesheets().add(getClass().getResource("application.css").toExternalForm());
 			primaryStage.setScene(scene);
@@ -39,7 +38,6 @@ public class App extends Application {
 			});
 			primaryStage.show();
 
-			// Запуск игры
 			gameController.startGame();
 		} catch (Exception e) {
 			e.printStackTrace();
@@ -47,7 +45,7 @@ public class App extends Application {
 	}
 
 	private void exitProgram(WindowEvent event) {
-		gameController.stopGame(); // Остановка игры при закрытии окна
+		gameController.stopGame();
 		System.exit(0);
 	}
 }

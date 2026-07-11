@@ -25,7 +25,6 @@ public class DonkeyKong extends GameEntity implements Collisionable {
 
     @Override
     public void simulate(double timeDelta) {
-        // Donkey Kong обычно не двигается, так что здесь ничего не происходит.
     }
 
     @Override

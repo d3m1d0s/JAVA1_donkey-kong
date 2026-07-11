@@ -52,7 +52,7 @@ public class Fireman extends WalkingEnemy {
         }
     }
 
-    // one 50% roll per ladder encounter, no reversal once on the ladder
+    // one roll per ladder, no turning around mid-climb
     private void considerClimbing() {
         boolean canUp = canGrabLadderAbove();
         boolean canDown = canGrabLadderBelow() && marioIsBelow();
@@ -67,7 +67,6 @@ public class Fireman extends WalkingEnemy {
         wasAtLadder = atLadder;
     }
 
-    // only lets a fireball descend a ladder when Mario is below it
     private boolean marioIsBelow() {
         return game.getMario().getPosition().getY() > position.getY() + height;
     }

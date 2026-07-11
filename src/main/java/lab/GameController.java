@@ -22,20 +22,18 @@ public class GameController {
     public GameController(Canvas canvas) {
         this.canvas = canvas;
         this.game = new Game(canvas.getWidth(), canvas.getHeight());
-        // Дополнительная инициализация, если требуется
     }
 
     public void startGame() {
         game.startGame();
 
-        // Настройка анимационного таймера
         animationTimer = new AnimationTimer() {
             private long lastTime;
 
             @Override
             public void handle(long now) {
                 if (lastTime > 0) {
-                    // cap the delta so a stalled frame cannot tunnel entities through platforms
+                    // a stalled frame would let entities fall through platforms
                     double timeDelta = Math.min((now - lastTime) / 1e9, 0.1);
                     applyInput();
                     game.simulate(timeDelta);
