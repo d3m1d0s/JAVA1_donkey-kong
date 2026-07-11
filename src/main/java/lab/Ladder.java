@@ -5,8 +5,6 @@ import javafx.geometry.Rectangle2D;
 import javafx.scene.canvas.GraphicsContext;
 import javafx.scene.image.Image;
 
-import java.security.interfaces.DSAPublicKey;
-
 public class Ladder extends GameEntity implements Collisionable{
     private double width;
     private double height;
@@ -45,7 +43,4 @@ public class Ladder extends GameEntity implements Collisionable{
 
     }
 
-    public double getHeight() {
-        return height;
-    }
 }

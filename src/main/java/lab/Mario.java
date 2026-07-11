@@ -2,7 +2,6 @@ package lab;
 
 import javafx.geometry.Point2D;
 import javafx.geometry.Rectangle2D;
-import javafx.scene.canvas.GraphicsContext;
 import javafx.scene.image.Image;
 
 public class Mario extends WalkingEnemy {
@@ -16,8 +15,8 @@ public class Mario extends WalkingEnemy {
     // jump keeps working this long after the last ground contact
     private static final double JUMP_GRACE_TIME = 0.1;
     private double timeSinceGrounded = 1;
-    public Mario(Game game, Point2D position, double width, double height, Point2D velocity) {
-        super(game, position, width, height, new Point2D(0,0));
+    public Mario(Game game, Point2D position, double width, double height) {
+        super(game, position, width, height, new Point2D(0, 0));
         this.imageR = new Image(getClass().getResourceAsStream("mario_go_right.gif"), width, height,
                 true, true);
         this.imageL = new Image(getClass().getResourceAsStream("mario_go_left.gif"), width, height,
@@ -49,16 +48,8 @@ public class Mario extends WalkingEnemy {
         return velocity;
     }
 
-    public boolean getLostTheLife() {
-        return lostTheLife;
-    }
-
     public int getLifes() {
         return lifes;
-    }
-
-    public void setLifes(int lifes) {
-        this.lifes = lifes;
     }
 
     public int getScore() {
@@ -72,10 +63,6 @@ public class Mario extends WalkingEnemy {
 
     public boolean getSavedThePrincess() {
         return savedThePrincess;
-    }
-
-    public void setLostTheLife() {
-        this.lostTheLife = false;
     }
 
     @Override

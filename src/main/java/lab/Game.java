@@ -1,10 +1,7 @@
 package lab;
 
 import javafx.geometry.Point2D;
-import javafx.scene.Scene;
 import javafx.scene.canvas.GraphicsContext;
-import javafx.scene.image.Image;
-import javafx.scene.input.KeyCode;
 import javafx.scene.paint.Color;
 
 import java.util.Iterator;
@@ -33,6 +30,7 @@ public class Game {
     private Score score;
     private List<Ladder> ladders;
     private DrawableSimulable[] objects;
+    private final Random random = new Random();
 
     public Game(double width, double height) {
         double brink = 20;
@@ -73,35 +71,24 @@ public class Game {
                             if (j == 1 && i == 3) {
                                 for (double k = 0; k < 3 * brink; k += brink) {
                                     this.ladders.add(new Ladder(this, new Point2D(posX, posY  + k), ladderWidth, ladderHeight));
-                                    //System.out.println("posX:" + posX + "\n");
-                                    //System.out.println("posY:" + posY + "\n");
                                 }
-                                //System.out.println("\n");
                             } if (j == 1 && i == 5) {
                                 for (double k = 0; k < 4 * brink; k += brink) {
                                     this.ladders.add(new Ladder(this, new Point2D(posX, posY  + k), ladderWidth, ladderHeight));
-                                    //System.out.println("posY:" + posY + "\n");
                                 }
-                                //System.out.println("\n");
                             }
                             else if (j == 7 && i == 5) {
                                 for (double k = 0; k < 5 * brink; k += brink) {
                                     this.ladders.add(new Ladder(this, new Point2D(posX, posY  + k), ladderWidth, ladderHeight));
-                                    //System.out.println("posY:" + posY + "\n");
                                 }
-                                //System.out.println("\n");
                             } else if (j == 5 && i == 3) {
                                 for (double k = 0; k < 4 * brink; k += brink) {
                                     this.ladders.add(new Ladder(this, new Point2D(posX, posY  + k), ladderWidth, ladderHeight));
-                                    //System.out.println("posY:" + posY + "\n");
                                 }
-                                //System.out.println("\n");
                             } else if (j == 9 && i == 3) {
                                 for (double k = 0; k < 5 * brink; k += brink) {
                                     this.ladders.add(new Ladder(this, new Point2D(posX, posY  + k), ladderWidth, ladderHeight));
-                                    //System.out.println("posY:" + posY + "\n");
                                 }
-                                //System.out.println("\n");
                             }
                             this.platforms.add(new Platform(this, new Point2D(posX, posY), new Point2D(platformWidth, platformHeight)));
                             posX -= brink * 2; posY-=2;
@@ -111,9 +98,7 @@ public class Game {
                             if (j == 1) {
                                 for (double k = 0; k < 3 * brink; k += brink) {
                                     this.ladders.add(new Ladder(this, new Point2D(posX, posY  + k), ladderWidth, ladderHeight));
-                                    //System.out.println("posY:" + posY + "\n");
                                 }
-                                //System.out.println("\n");
                             }
                             this.platforms.add(new Platform(this, new Point2D(posX, posY), new Point2D(platformWidth, platformHeight)));
                             posX -= brink * 2; posY-=2;
@@ -122,10 +107,7 @@ public class Game {
                             if (j == 3) {
                                 for (double k = 0; k < 4 * brink; k += brink) {
                                     this.ladders.add(new Ladder(this, new Point2D(posX, posY  +  k), ladderWidth, ladderHeight));
-                                    //System.out.println("posX:" + posX + "\n");
-                                    //System.out.println("posY:" + posY + "\n");
                                 }
-                                //System.out.println("\n");
                             }
                             this.platforms.add(new Platform(this, new Point2D(posX, posY), new Point2D(platformWidth, platformHeight)));
                             posX -= brink * 2;
@@ -139,27 +121,19 @@ public class Game {
                             if (j == 1) {
                                 for (double k = 0; k < 3 * brink; k += brink) {
                                     this.ladders.add(new Ladder(this, new Point2D(posX, posY + k), ladderWidth, ladderHeight));
-                                    //System.out.println("posY:" + posY + "\n");
                                 }
-                                //System.out.println("\n");
                             } else if (j == 3 && i == 2) {
                                 for (double k = 0; k < 4 * brink; k += brink) {
                                     this.ladders.add(new Ladder(this, new Point2D(posX, posY + k), ladderWidth, ladderHeight));
-                                    //System.out.println("posY:" + posY + "\n");
                                 }
-                                //System.out.println("\n");
                             } else if (j == 9 && i == 2) {
                                 for (double k = 0; k < 5 * brink; k += brink) {
                                     this.ladders.add(new Ladder(this, new Point2D(posX, posY + k), ladderWidth, ladderHeight));
-                                    //System.out.println("posY:" + posY + "\n");
                                 }
-                                //System.out.println("\n");
                             } else if (j == 5 && i == 4) {
                                 for (double k = 0; k < 4 * brink; k += brink) {
                                     this.ladders.add(new Ladder(this, new Point2D(posX, posY + k), ladderWidth, ladderHeight));
-                                    //System.out.println("posY:" + posY + "\n");
                                 }
-                                //System.out.println("\n");
                             }
                             this.platforms.add(new Platform(this, new Point2D(posX, posY), new Point2D(platformWidth, platformHeight)));
                             posX += brink * 2; posY-=2;
@@ -183,9 +157,7 @@ public class Game {
                     if (j == 2) {
                         for (double k = 0; k < 4 * brink; k += brink) {
                             this.ladders.add(new Ladder(this, new Point2D(posX, posY +2+ k), ladderWidth, ladderHeight));
-                            //System.out.println("posY:" + posY + "\n");
                         }
-                        //System.out.println("\n");
                     }
                     this.platforms.add(new Platform(this, new Point2D(posX, posY), new Point2D(platformWidth, platformHeight)));
                     posX += brink * 2;
@@ -206,7 +178,7 @@ public class Game {
         //Mario
         double marioWidth = brink; // Примерная ширина Mario
         double marioHeight = brink; // Примерная высота Mario
-        this.mario = new Mario(this, new Point2D(100, 670), marioWidth, marioHeight, new Point2D(100, 0));
+        this.mario = new Mario(this, new Point2D(100, 670), marioWidth, marioHeight);
 
         //Fireman
         double firemanWidth = brink; // Примерная ширина Fireman
@@ -232,10 +204,6 @@ public class Game {
         gc.setFill(Color.BLACK);
         gc.fillRect(0,0,width,height);
 
-        // Рисуем фон, если он есть
-        // if (background != null) {
-        //     gc.drawImage(background, 0, 0, width, height);
-        // }
 
         // ... рисуем объекты ...
         for (DrawableSimulable obj : objects) {
@@ -310,7 +278,6 @@ public class Game {
     }
 
     private void spawnBarrel() {
-        Random random = new Random();
         double barrelWidth = 20; // Примерная ширина бочки
         double barrelHeight = 20; // Примерная высота бочки
         Point2D spawnPosition = new Point2D(50, 180); // Примерная начальная позиция
@@ -337,7 +304,6 @@ public class Game {
             return;
         }
 
-        Random random = new Random();
         double firemanWidth = 20;
         double firemanHeight = 20;
         Point2D spawnPosition = new Point2D(60, 671);
@@ -409,10 +375,6 @@ public class Game {
 
     public Mario getMario() {
         return mario;
-    }
-
-    public boolean getIsStarted() {
-        return isStarted;
     }
 
     public boolean getIsGameOver() {

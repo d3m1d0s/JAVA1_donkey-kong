@@ -26,10 +26,6 @@ public class GameController {
     }
 
     public void startGame() {
-        /*
-        // Инициализация игры
-        game.initializeGameObjects(); // Предполагается, что это метод для инициализации объектов игры
-         */
         game.startGame();
 
         // Настройка анимационного таймера

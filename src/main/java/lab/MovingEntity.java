@@ -15,7 +15,6 @@ public abstract class MovingEntity extends GameEntity implements Collisionable {
     protected double height;
     protected boolean onPlatform = false;
     protected boolean onLadder = false;
-    protected boolean nearLadder = false;
     private double climbStartBottom;
     protected Image imageR;
     protected Image imageL;
@@ -124,7 +123,6 @@ public abstract class MovingEntity extends GameEntity implements Collisionable {
 
     public void fall(double timeDelta) {
         if (onPlatform) {
-            velocity = new Point2D(velocity.getX(), velocity.getY());
             onPlatform = false;
         } else {
             velocity = velocity.add(0, GRAVITY * timeDelta);
@@ -222,11 +220,6 @@ public abstract class MovingEntity extends GameEntity implements Collisionable {
     public void hitBy(Collisionable another) {
         if (another instanceof Platform platform && !onLadder) {
             resolvePlatformCollision(platform);
-        }
-        if (another instanceof Ladder) {
-            nearLadder = true;
-        } else {
-            nearLadder = false;
         }
     }
 

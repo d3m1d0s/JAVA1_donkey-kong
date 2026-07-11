@@ -39,9 +39,6 @@ public class Platform extends GameEntity implements Collisionable {
 
     }
 
-    public Point2D getPosition() {
-        return this.position;
-    }
 
     // Методы для обновления позиции платформы, если это необходимо
 }

@@ -2,7 +2,6 @@ package lab;
 
 import javafx.geometry.Point2D;
 import javafx.scene.canvas.GraphicsContext;
-import javafx.scene.image.Image;
 import javafx.scene.paint.Color;
 import javafx.scene.text.Font;
 import javafx.scene.text.FontWeight;
@@ -11,9 +10,6 @@ public class Score extends GameEntity {
     private double width;
     private double height;
     private int brink = 20;
-    private boolean life3 = true;
-    private boolean life2 = true;
-    private boolean life1 = true;
 
     public Score(Game game, Point2D position, double width, double height) {
         super(game, position);
