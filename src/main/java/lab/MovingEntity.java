@@ -27,14 +27,37 @@ public abstract class MovingEntity extends GameEntity implements Collisionable {
     @Override
     public void simulate(double timeDelta) {
         if (onLadder) {
+            double previousBottom = position.getY() + height;
             position = position.add(0, velocity.getY() * timeDelta);
 
+            if (velocity.getY() > 0 && landOnPlatform(previousBottom)) {
+                return;
+            }
             if (!isOnLadder()) {
                 stopClimbing();
+                velocity = new Point2D(velocity.getX(), 0);
             }
         } else {
             standardMovementLogic(timeDelta);
         }
+    }
+
+    private boolean landOnPlatform(double previousBottom) {
+        double bottom = position.getY() + height;
+        for (Platform platform : game.getPlatforms()) {
+            Rectangle2D box = platform.getBoundingBox();
+            // only a fresh crossing of the top counts, so the descent can pass through the platform it started from
+            boolean crossedTop = previousBottom <= box.getMinY() && bottom > box.getMinY();
+            boolean overlapsX = position.getX() + width > box.getMinX() && position.getX() < box.getMaxX();
+            if (crossedTop && overlapsX) {
+                position = new Point2D(position.getX(), box.getMinY() - height);
+                stopClimbing();
+                velocity = new Point2D(velocity.getX(), 0);
+                onPlatform = true;
+                return true;
+            }
+        }
+        return false;
     }
 
     protected void standardMovementLogic(double timeDelta) {

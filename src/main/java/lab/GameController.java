@@ -17,6 +17,7 @@ public class GameController {
     private AnimationTimer animationTimer;
     private Canvas canvas;
     private final Set<KeyCode> pressedKeys = EnumSet.noneOf(KeyCode.class);
+    private KeyCode lastWalkKey;
 
     public GameController(Canvas canvas) {
         this.canvas = canvas;
@@ -53,8 +54,13 @@ public class GameController {
     public void initializeControlHandlers(Scene scene) {
         scene.setOnKeyPressed(event -> {
             boolean firstPress = pressedKeys.add(event.getCode());
-            if (firstPress && event.getCode() == KeyCode.SPACE) {
+            if (!firstPress) {
+                return;
+            }
+            if (event.getCode() == KeyCode.SPACE) {
                 game.getMario().jump();
+            } else if (event.getCode() == KeyCode.LEFT || event.getCode() == KeyCode.RIGHT) {
+                lastWalkKey = event.getCode();
             }
         });
 
@@ -68,9 +74,16 @@ public class GameController {
     private void applyInput() {
         Mario mario = game.getMario();
 
+        boolean right = pressedKeys.contains(KeyCode.RIGHT);
+        boolean left = pressedKeys.contains(KeyCode.LEFT);
         int walk = 0;
-        if (pressedKeys.contains(KeyCode.RIGHT)) { walk++; }
-        if (pressedKeys.contains(KeyCode.LEFT)) { walk--; }
+        if (right && left) {
+            walk = lastWalkKey == KeyCode.LEFT ? -1 : 1;
+        } else if (right) {
+            walk = 1;
+        } else if (left) {
+            walk = -1;
+        }
 
         int climb = 0;
         if (pressedKeys.contains(KeyCode.UP)) { climb--; }
@@ -81,7 +94,12 @@ public class GameController {
         }
 
         if (mario.isClimbing()) {
-            mario.setVelocity(new Point2D(0, climb * CLIMB_SPEED));
+            if (climb == 0 && walk != 0) {
+                mario.stopClimbing(); // walking sideways steps off the ladder
+                mario.setVelocity(new Point2D(walk * WALK_SPEED, 0));
+            } else {
+                mario.setVelocity(new Point2D(0, climb * CLIMB_SPEED));
+            }
         } else {
             mario.setVelocity(new Point2D(walk * WALK_SPEED, mario.getVelocity().getY()));
         }
