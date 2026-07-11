@@ -1,7 +1,4 @@
-module lab01 {
-    requires transitive javafx.controls;
-    requires javafx.fxml;
-    requires javafx.base;
-    opens lab to javafx.fxml;
+module donkeykong {
+    requires javafx.controls;
     exports lab;
 }
