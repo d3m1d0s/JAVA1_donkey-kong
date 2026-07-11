@@ -13,6 +13,9 @@ public class Mario extends WalkingEnemy {
     private int lifes = 3;
     private static final double IMMUNITY_TIME = 3.0; // 3 секунды бессмертия после потери жизни
     private double timeSinceHit = IMMUNITY_TIME; // starts expired so the first hit counts immediately
+    // jump keeps working this long after the last ground contact
+    private static final double JUMP_GRACE_TIME = 0.1;
+    private double timeSinceGrounded = 1;
     public Mario(Game game, Point2D position, double width, double height, Point2D velocity) {
         super(game, position, width, height, new Point2D(0,0));
         this.imageR = new Image(getClass().getResourceAsStream("mario_go_right.gif"), width, height,
@@ -26,10 +29,11 @@ public class Mario extends WalkingEnemy {
     }
 
     public void jump() {
-        if (onPlatform) {
+        if (timeSinceGrounded <= JUMP_GRACE_TIME && !onLadder) {
             velocity = new Point2D(velocity.getX(), -90);
             onPlatform = false;
             jumpBonusPaid = false;
+            timeSinceGrounded = 1;
         }
     }
 
@@ -77,6 +81,10 @@ public class Mario extends WalkingEnemy {
     @Override
     public void simulate(double timeDelta) {
         timeSinceHit += timeDelta;
+        timeSinceGrounded += timeDelta;
+        if (onPlatform) {
+            timeSinceGrounded = 0;
+        }
 
         if (this.lostTheLife && timeSinceHit >= IMMUNITY_TIME) {
             timeSinceHit = 0;
