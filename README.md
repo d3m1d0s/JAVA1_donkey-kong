@@ -5,6 +5,8 @@ This is a simple JavaFX clone of the classic Donkey Kong arcade game, made as
 a semester project for the Java I course at VSB-TUO. The goal is to get Mario
 up the platforms to the princess while dodging rolling barrels and fireballs.
 
+![Gameplay](screenshot.png)
+
 ## Build and Run
 To run the game, ensure JDK 17 and Maven are installed and execute:
 
